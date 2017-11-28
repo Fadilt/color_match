@@ -1,4 +1,4 @@
-#Wed Nov 22 13:07:25 CET 2017
-base.0=/home/wanted/Téléchargements/P8_Sokoban/app/build/intermediates/transforms/dex/debug/folders/1000/5/slice_1
+#Mon Nov 27 23:31:51 CET 2017
+base.0=/home/wanted/Documents/P8_Sokoban/app/build/intermediates/transforms/dex/debug/folders/1000/5/slice_1
 renamed.0=classes.dex
-file.0=/home/wanted/Téléchargements/P8_Sokoban/app/build/intermediates/transforms/dex/debug/folders/1000/5/slice_1/classes.dex
+file.0=/home/wanted/Documents/P8_Sokoban/app/build/intermediates/transforms/dex/debug/folders/1000/5/slice_1/classes.dex

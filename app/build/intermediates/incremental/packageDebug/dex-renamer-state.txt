@@ -1,7 +1,7 @@
-#Thu Nov 16 01:38:14 CET 2017
-base.0=/home/wanted/Téléchargements/P8_Sokoban/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run_ba3003964ec216ed432c980e11ce33878aceb708
+#Mon Nov 27 23:31:51 CET 2017
+base.0=/home/wanted/Documents/P8_Sokoban/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run-bootstrap_d279b33fe76e811e67fdb9ee80c89e37a3194f24
 renamed.1=classes.dex
 renamed.0=classes2.dex
-file.1=/home/wanted/Téléchargements/P8_Sokoban/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run-bootstrap_f70d0c33228be9d9d963f4c798d39187a3295f70/classes.dex
-base.1=/home/wanted/Téléchargements/P8_Sokoban/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run-bootstrap_f70d0c33228be9d9d963f4c798d39187a3295f70
-file.0=/home/wanted/Téléchargements/P8_Sokoban/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run_ba3003964ec216ed432c980e11ce33878aceb708/classes.dex
+file.1=/home/wanted/Documents/P8_Sokoban/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run_3c927d8b3867bdf5dd815def845517a8599a6548/classes.dex
+base.1=/home/wanted/Documents/P8_Sokoban/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run_3c927d8b3867bdf5dd815def845517a8599a6548
+file.0=/home/wanted/Documents/P8_Sokoban/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run-bootstrap_d279b33fe76e811e67fdb9ee80c89e37a3194f24/classes.dex

@@ -5,7 +5,8 @@ import android.os.Bundle;
 import android.view.View;
 
 // declaration de notre activity héritée de Activity
-public class p8_Sokoban extends Activity {
+public class p8_Sokoban extends Activity
+{
 
     private SokobanView mSokobanView;	
 	
