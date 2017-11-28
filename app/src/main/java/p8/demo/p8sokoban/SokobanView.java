@@ -69,6 +69,8 @@ public class SokobanView extends SurfaceView implements SurfaceHolder.Callback, 
     static final int CST_perso = 11;
     static final int CST_zone = 10;
 
+//oulalalalalalala : kpaaaaatoumbi liyaaaaabééééé
+
 
 
     // tableau de reference du terrain
