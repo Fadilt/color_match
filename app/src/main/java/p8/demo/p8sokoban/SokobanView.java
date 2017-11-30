@@ -60,32 +60,33 @@ public class SokobanView extends SurfaceView implements SurfaceHolder.Callback, 
     static final int CST_rouge = 3;
     static final int CST_cyan = 4;
     static final int CST_jaune = 5;
-
-    static final int CST_vide = 7;
-    static final int CST_vide1 = 8;
+    static final int CST_blanc = 6;
+    static final int CST_gris = 7;
+    static final int CST_vid = 8;
 
 
     static final int CST_block = 9;
     static final int CST_perso = 11;
     static final int CST_zone = 10;
 
-//oulalalalalalala : kpaaaaatoumbi liyaaaaabééééé
-
 
 
     // tableau de reference du terrain
-    int [][] ref    = {
-            {CST_vide, CST_vide1, CST_vide,CST_vide1, CST_vide, CST_vide1, CST_vide, CST_vide1, CST_vide, CST_vide1},
-            {CST_vide, CST_vide1, CST_vide,CST_vide1, CST_vide, CST_vide1, CST_vide, CST_vide1, CST_vide, CST_vide1},
-            {CST_vide, CST_vide1, CST_vide,CST_vide1, CST_vide, CST_vide1, CST_vide, CST_vide1, CST_vide, CST_vide1},
-            {CST_vide, CST_vide1, CST_vide,CST_vide1, CST_vide, CST_vide1, CST_vide, CST_vide1, CST_vide, CST_vide1},
-            {CST_vide, CST_vide1, CST_vide,CST_vide1, CST_vide, CST_vide1, CST_vide, CST_vide1, CST_vide, CST_vide1},
-            {CST_vide, CST_vide1, CST_vide,CST_vide1, CST_vide, CST_vide1, CST_vide, CST_vide1, CST_vide, CST_vide1},
-            {CST_vide, CST_vide1, CST_vide,CST_vide1, CST_vide, CST_vide1, CST_vide, CST_vide1, CST_vide, CST_vide1},
-            {CST_vide, CST_vide1, CST_vide,CST_vide1, CST_vide, CST_vide1, CST_vide, CST_vide1, CST_vide, CST_vide1},
-            {CST_vide, CST_vide1, CST_vide,CST_vide1, CST_vide, CST_vide1, CST_vide, CST_vide1, CST_vide, CST_vide1},
-            {CST_vide, CST_vide1, CST_vide,CST_vide1, CST_vide, CST_vide1, CST_vide, CST_vide1, CST_vide, CST_vide1}
+    int[][] ref = {
+            {CST_blanc, CST_gris, CST_blanc, CST_gris, CST_blanc, CST_gris, CST_blanc, CST_gris, CST_blanc, CST_gris},
+            {CST_gris, CST_blanc, CST_gris, CST_blanc, CST_gris, CST_blanc, CST_gris, CST_blanc, CST_gris, CST_blanc},
+            {CST_blanc, CST_gris, CST_blanc, CST_gris, CST_blanc, CST_gris, CST_blanc, CST_gris, CST_blanc, CST_gris},
+            {CST_gris, CST_blanc, CST_gris, CST_blanc, CST_gris, CST_blanc, CST_gris, CST_blanc, CST_gris, CST_blanc},
+            {CST_blanc, CST_gris, CST_blanc, CST_gris, CST_blanc, CST_gris, CST_blanc, CST_gris, CST_blanc, CST_gris},
+            {CST_gris, CST_blanc, CST_gris, CST_blanc, CST_gris, CST_blanc, CST_gris, CST_blanc, CST_gris, CST_blanc},
+            {CST_blanc, CST_gris, CST_blanc, CST_gris, CST_blanc, CST_gris, CST_blanc, CST_gris, CST_blanc, CST_gris},
+            {CST_gris, CST_blanc, CST_gris, CST_blanc, CST_gris, CST_blanc, CST_gris, CST_blanc, CST_gris, CST_blanc},
+            {CST_blanc, CST_gris, CST_blanc, CST_gris, CST_blanc, CST_gris, CST_blanc, CST_gris, CST_blanc, CST_gris},
+            {CST_gris, CST_blanc, CST_gris, CST_blanc, CST_gris, CST_blanc, CST_gris, CST_blanc, CST_gris, CST_blanc},
     };
+
+
+
 
 
 
@@ -247,7 +248,10 @@ public class SokobanView extends SurfaceView implements SurfaceHolder.Callback, 
         paint.setStrokeWidth(3);//la taille d'un point pixel
         paint.setTextAlign(Paint.Align.LEFT);//Alignement GAUCHE signifie que tout le texte sera dessiné à droite de son origine (c'est-à-dire que l'origine spécifie le bord GAUCHE du texte) et ainsi de suite.
         carte           = new int[carteHeight][carteWidth];
+
         loadlevel();
+        initColor();
+        
         carteTopAnchor  = (getHeight()- carteHeight*carteTileSize)/2;
 
         carteLeftAnchor = (getWidth()- carteWidth*carteTileSize)/2;
@@ -286,25 +290,145 @@ public class SokobanView extends SurfaceView implements SurfaceHolder.Callback, 
 
     // dessin de la carte du jeu
     private void paintcarte(Canvas canvas) {
-        for (int i=0; i< carteHeight; i++) {
-            for (int j=0; j< carteWidth; j++) {
-                switch (carte[i][j]) {
+        //int value2=r.nextInt(10)
+        for (int i = 0; i < carteHeight; i++) {
+            for (int j = 0; j < carteWidth; j++) {
+
+
+                if (ref[i][j] == CST_blanc) {
+                    canvas.drawBitmap(vide, carteLeftAnchor + j * carteTileSize, carteTopAnchor + i * carteTileSize, null);
+                }
+                if (ref[i][j] == CST_gris) {
+                    canvas.drawBitmap(vide1, carteLeftAnchor + j * carteTileSize, carteTopAnchor + i * carteTileSize, null);
+                }
+            }
+        }
+
+       /* for (int i = 0; i < carteHeight; i++) {
+            for (int j = 0; j < carteWidth; j++) {
+
+
+                if (carte[i][j] == 6 || carte[i][j] == 7) {
+                    int value = r.nextInt(5);
+
+                    carte[i][j] = value;
+                    Log.i("LE RANDOOOOOM", "ESSST:" + value);
+                    //canvas.drawBitmap(vert,carteLeftAnchor+ j*carteTileSize, carteTopAnchor+ i*carteTileSize, null);
+
+
+                }
+
+                if (carte[i][j] == CST_diamant) {
+                    canvas.drawBitmap(diamant, carteLeftAnchor + j * carteTileSize, carteTopAnchor + i * carteTileSize, null);
+                }
+
+                if (carte[i][j] == CST_magenta) {
+                    canvas.drawBitmap(magenta, carteLeftAnchor + j * carteTileSize, carteTopAnchor + i * carteTileSize, null);
+                }
+                if (carte[i][j] == CST_cyan) {
+                    canvas.drawBitmap(cyan, carteLeftAnchor + j * carteTileSize, carteTopAnchor + i * carteTileSize, null);
+                }
+
+                if (carte[i][j] == CST_vert) {
+                    canvas.drawBitmap(vert, carteLeftAnchor + j * carteTileSize, carteTopAnchor + i * carteTileSize, null);
+                }
+
+                if (carte[i][j] == CST_jaune) {
+                    canvas.drawBitmap(jaune, carteLeftAnchor + j * carteTileSize, carteTopAnchor + i * carteTileSize, null);
+                }
+
+                if (carte[i][j] == CST_rouge) {
+                    canvas.drawBitmap(rouge, carteLeftAnchor + j * carteTileSize, carteTopAnchor + i * carteTileSize, null);
+                }
+
+                /*switch (carte[i][j]) {
                     case CST_block:
                         canvas.drawBitmap(block, carteLeftAnchor+ j*carteTileSize, carteTopAnchor+ i*carteTileSize, null);
-                        break;
+                        break;                    
                     case CST_zone:
                         canvas.drawBitmap(zone[currentStepZone],carteLeftAnchor+ j*carteTileSize, carteTopAnchor+ i*carteTileSize, null);
                         break;
-                    case CST_vide:
+                    case CST_blanc:
                         canvas.drawBitmap(vide,carteLeftAnchor+ j*carteTileSize, carteTopAnchor+ i*carteTileSize, null);
                         break;
-                    case CST_vide1:
+                    case CST_gris:
                         canvas.drawBitmap(vide1,carteLeftAnchor+ j*carteTileSize, carteTopAnchor+ i*carteTileSize, null);
                         break;
+                }
+
+
+            }
+        }*/
+    }
+
+
+    public void initColor()
+    {
+
+        //Initialisation de 10 cases vides
+        for(int i = 0 ; i<10 ; i++)
+        {
+            int k = r.nextInt(carteHeight);
+            int l = r.nextInt(carteWidth);
+            carte[k][l] = 8;
+        }
+
+        //Initialisation du reste avec des couleurs
+        for(int i=0 ; i<carteHeight ; i++)
+        {
+            for(int j=0 ; j<carteWidth ; j++)
+            {
+                if(carte[i][j] != 8)
+                {
+                    int color = r.nextInt(6);
+                    carte[i][j] = color;
                 }
             }
         }
     }
+
+
+
+    // dessin des couleurs
+    private void paintcolor(Canvas canvas) {
+        if (level == 1) {
+
+                    for (int i = 0; i < carteHeight ; i++)
+                    {
+                        for (int j = 0; j < carteWidth ; j++) {
+
+                            switch (carte[i][j]) {
+
+
+                                case CST_diamant:
+                                    canvas.drawBitmap(diamant, carteLeftAnchor + j * carteTileSize, carteTopAnchor + i * carteTileSize, null);
+                                    break;
+
+                                case CST_magenta:
+                                    canvas.drawBitmap(magenta, carteLeftAnchor + j * carteTileSize, carteTopAnchor + i * carteTileSize, null);
+                                    break;
+
+                                case CST_rouge:
+                                    canvas.drawBitmap(rouge, carteLeftAnchor + j * carteTileSize, carteTopAnchor + i * carteTileSize, null);
+                                    break;
+
+                                case CST_cyan:
+                                    canvas.drawBitmap(cyan, carteLeftAnchor + j * carteTileSize, carteTopAnchor + i * carteTileSize, null);
+                                    break;
+
+                                case CST_vert:
+                                    canvas.drawBitmap(vert, carteLeftAnchor + j * carteTileSize, carteTopAnchor + i * carteTileSize, null);
+                                    break;
+
+                                case CST_jaune:
+                                    canvas.drawBitmap(jaune, carteLeftAnchor + j * carteTileSize, carteTopAnchor + i * carteTileSize, null);
+                                    break;
+                            }
+                        }
+
+                    }
+            }
+        }    
 
     // dessin du curseur du joueur
     private void paintPlayer(Canvas canvas) {
@@ -356,9 +480,10 @@ public class SokobanView extends SurfaceView implements SurfaceHolder.Callback, 
             //initparameters();
         } else {
             paintcarte(canvas);
-            paintPlayer(canvas);
-            paintdiamants(canvas);
-            paintarrow(canvas);
+            paintcolor(canvas);            
+            //paintPlayer(canvas);
+            //paintdiamants(canvas);
+            //paintarrow(canvas);
         }
 
     }
