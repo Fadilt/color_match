@@ -72,22 +72,19 @@ public class SokobanView extends SurfaceView implements SurfaceHolder.Callback, 
 
 
 
-    class Color { 
-
-int color_tab[;
-int row;
-int column;
-
- 	
-
-
-public void color(int a ,int y,int x){			
-					
-color_one=a;
-row=y;
-column=x;			
-
-}					
+class Color {
+    
+    int color_tab;
+    int row;
+    int column;
+    
+    public void color(int a ,int y,int x){
+        
+        color_one=a;
+        row=y;
+        column=x;
+        
+    }
 }
 
 //oulalalalalalala : kpaaaaatoumbi liyaaaaabééééé
