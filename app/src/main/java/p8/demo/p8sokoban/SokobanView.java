@@ -13,20 +13,19 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import java.util.Random;
+
 public class SokobanView extends SurfaceView implements SurfaceHolder.Callback, Runnable {
 
     // Declaration des images
-    private Bitmap 		block;
     private Bitmap 		diamant;
     private Bitmap rouge;
     private Bitmap vert;
     private Bitmap magenta;
     private Bitmap jaune;
     private Bitmap cyan;
-    private Bitmap 		perso;
     private Bitmap 		vide;
     private Bitmap      vide1;
-    private Bitmap[] 	zone = new Bitmap[4];
     private Bitmap 		up;
     private Bitmap 		down;
     private Bitmap 		left;
@@ -65,29 +64,33 @@ public class SokobanView extends SurfaceView implements SurfaceHolder.Callback, 
     static final int CST_vid = 8;
 
 
-    static final int CST_block = 9;
-    static final int CST_perso = 11;
-    static final int CST_zone = 10;
+
+    class Color {//tab
+
+        int color_one;
+        int row;
+        int column;
 
 
+        Color() {
+
+            color_one = 10;
+            row = 10;
+            column = 10;
 
 
-class Color {
-    
-    int color_tab;
-    int row;
-    int column;
-    
-    public void color(int a ,int y,int x){
-        
-        color_one=a;
-        row=y;
-        column=x;
-        
+        }
+
+
+        Color(int a ,int y,int x){
+
+            color_one=a;
+            row=y;
+            column=x;
+
+        }
+
     }
-}
-
-
 
     // tableau de reference du terrain
     int[][] ref = {
@@ -108,73 +111,9 @@ class Color {
 
 
 
-    // tableau de reference du terrain
-    int[][] ref2 = {
-            {CST_vide, CST_block, CST_block, CST_block, CST_block, CST_block, CST_block, CST_block, CST_block, CST_vide},
-            {CST_block, CST_vide, CST_vide, CST_vide, CST_vide, CST_vide, CST_vide, CST_block, CST_block, CST_block},
-            {CST_block, CST_vide, CST_vide, CST_vide, CST_vide, CST_vide, CST_vide, CST_vide, CST_vide, CST_block},
-            {CST_block, CST_vide, CST_block, CST_block, CST_vide, CST_vide, CST_block, CST_vide, CST_vide, CST_block},
-            {CST_block, CST_vide, CST_vide, CST_vide, CST_vide, CST_vide, CST_vide, CST_vide, CST_vide, CST_block},
-            {CST_block, CST_vide, CST_block, CST_vide, CST_vide, CST_block, CST_vide, CST_vide, CST_vide, CST_block},
-            {CST_block, CST_vide, CST_vide, CST_vide, CST_block, CST_block, CST_vide, CST_block, CST_vide, CST_block},
-            {CST_block, CST_vide, CST_vide, CST_vide, CST_vide, CST_vide, CST_vide, CST_vide, CST_vide, CST_block},
-            {CST_block, CST_block, CST_vide, CST_zone, CST_zone, CST_zone, CST_zone, CST_vide, CST_block, CST_block},
-            {CST_vide, CST_block, CST_block, CST_block, CST_block, CST_block, CST_block, CST_block, CST_block, CST_vide}
-    };
-
-
-    // position de reference des diamants
-    int [][] refdiamants   = {
-            {2, 3},
-            {2, 6},
-            {6, 3},
-            {6, 6}
-    };
 
 
 
-
-
-
-
-
-
-    // position de reference des diamants
-    int[][] refdiamants2 = {
-            {4, 2},
-            {3, 7},
-            {6, 2},
-            {2, 2}
-    };
-
-
-
-    // position de reference du joueur
-    int refxPlayer = 4;
-    int refyPlayer = 1;
-
-    // position courante des diamants
-    int [][] diamants   = {
-            {2, 3},
-            {2, 6},
-            {6, 3},
-            {6, 6}
-    };
-
-
-    // position courante des diamants
-    int[][] diamants2 = {
-            {4, 3},
-            {4, 6},
-            {6, 2},
-            {2, 2}
-    };
-
-
-
-    // position courante du joueur
-    int xPlayer = 4;
-    int yPlayer = 1;
 
     /* compteur et max pour animer les zones d'arriv�e des diamants */
     int currentStepZone = 0;
@@ -204,18 +143,12 @@ class Color {
         // chargement des images
         mContext = context;
         mRes = mContext.getResources();
-        block = BitmapFactory.decodeResource(mRes, R.drawable.block);
         diamant = BitmapFactory.decodeResource(mRes, R.drawable.bleu);
         rouge = BitmapFactory.decodeResource(mRes, R.drawable.rouge);
         vert = BitmapFactory.decodeResource(mRes, R.drawable.vert);
         jaune = BitmapFactory.decodeResource(mRes, R.drawable.jaune);
         cyan = BitmapFactory.decodeResource(mRes, R.drawable.cyan);
         magenta = BitmapFactory.decodeResource(mRes, R.drawable.magenta);
-        perso = BitmapFactory.decodeResource(mRes, R.drawable.perso);
-        zone[0] = BitmapFactory.decodeResource(mRes, R.drawable.zone_01);
-        zone[1] = BitmapFactory.decodeResource(mRes, R.drawable.zone_02);
-        zone[2] = BitmapFactory.decodeResource(mRes, R.drawable.zone_03);
-        zone[3] = BitmapFactory.decodeResource(mRes, R.drawable.zone_04);
         vide = BitmapFactory.decodeResource(mRes, R.drawable.blanc);
         vide1 = BitmapFactory.decodeResource(mRes, R.drawable.gris);
         up = BitmapFactory.decodeResource(mRes, R.drawable.up);
@@ -244,12 +177,6 @@ class Color {
                     carte[j][i] = ref[j][i];
                 }
             }
-        } else if (level == 2) {
-            for (int i = 0; i < carteHeight; i++) {
-                for (int j = 0; j < carteWidth; j++) {
-                    carte[j][i] = ref2[j][i];
-                }
-            }
         }
     }
 
@@ -273,19 +200,8 @@ class Color {
         carteTopAnchor  = (getHeight()- carteHeight*carteTileSize)/2;
 
         carteLeftAnchor = (getWidth()- carteWidth*carteTileSize)/2;
-        xPlayer = refxPlayer;
-        yPlayer = refyPlayer;
-        if (level == 1) {
-            for (int i = 0; i < 4; i++) {
-                diamants[i][1] = refdiamants[i][1];
-                diamants[i][0] = refdiamants[i][0];
-            }
-        } else if (level == 2) {
-            for (int i = 0; i < 4; i++) {
-                diamants2[i][1] = refdiamants2[i][1];
-                diamants2[i][0] = refdiamants2[i][0];
-            }
-        }
+
+
         if ((cv_thread!=null) && (!cv_thread.isAlive())) {
             cv_thread.start();
             Log.e("-FCT-", "cv_thread.start()");
@@ -383,6 +299,7 @@ class Color {
     public void initColor()
     {
 
+        Random r= new Random();
         //Initialisation de 10 cases vides
         for(int i = 0 ; i<10 ; i++)
         {
@@ -448,28 +365,10 @@ class Color {
             }
         }    
 
-    // dessin du curseur du joueur
-    private void paintPlayer(Canvas canvas) {
-        canvas.drawBitmap(perso,carteLeftAnchor+ xPlayer*carteTileSize, carteTopAnchor+ yPlayer*carteTileSize, null);
-    }
 
-    // dessin des diamants
-    private void paintdiamants(Canvas canvas) {
-        if (level == 1) {
-            for (int i = 0; i < 4; i++) {
-                canvas.drawBitmap(diamant, carteLeftAnchor + diamants[i][1] * carteTileSize, carteTopAnchor + diamants[i][0] * carteTileSize, null);
-            }
-        }
-
-        if (level == 2) {
-            for (int i = 0; i < 4; i++) {
-                canvas.drawBitmap(diamant, carteLeftAnchor + diamants2[i][1] * carteTileSize, carteTopAnchor + diamants2[i][0] * carteTileSize, null);
-            }
-        }
-    }
 
     // permet d'identifier si la partie est gagnee (tous les diamants à leur place)
-    private boolean isWon() {
+    /*private boolean isWon() {
         if (level == 1) {
             for (int i = 0; i < 4; i++) {
                 if (!IsCell(diamants[i][1], diamants[i][0], CST_zone)) {
@@ -478,31 +377,25 @@ class Color {
             }
         }
 
-        if (level == 2) {
-            for (int i = 0; i < 4; i++) {
-                if (!IsCell(diamants2[i][1], diamants2[i][0], CST_zone)) {
-                    return false;
-                }
-            }
-        }
+
         return true;
-    }
+    }*/
 
     // dessin du jeu (fond uni, en fonction du jeu gagne ou pas dessin du plateau et du joueur des diamants et des fleches)
     private void nDraw(Canvas canvas) {
         canvas.drawRGB(44,44,44);
-        if (isWon()) {
+       /* if (isWon()) {
             paintcarte(canvas);
             paintwin(canvas);
 
             //initparameters();
-        } else {
+        } else*/
             paintcarte(canvas);
             paintcolor(canvas);            
             //paintPlayer(canvas);
             //paintdiamants(canvas);
             //paintarrow(canvas);
-        }
+
 
     }
 
@@ -530,7 +423,7 @@ class Color {
         Canvas c = null;
         while (in) {
             try {
-                cv_thread.sleep(40);
+                Thread.sleep(40);
                 currentStepZone = (currentStepZone + 1) % maxStepZone;
                 try {
                     c = holder.lockCanvas(null);//obtient un canvas pour pouvoir dessiner dans cette surface
@@ -552,122 +445,14 @@ class Color {
         if ((x < 0) || (x > carteWidth- 1)) {
             return true;
         }
-        if ((y < 0) || (y > carteHeight- 1)) {
-            return true;
-        }
-        return false;
+        return (y < 0) || (y > carteHeight - 1);
     }
 
     //controle de la valeur d'une cellule
     private boolean IsCell(int x, int y, int mask) {
-        if (carte[y][x] == mask) {
-            return true;
-        }
-        return false;
+        return carte[y][x] == mask;
     }
 
-    // controle si nous avons un diamant dans la case
-    private boolean IsDiamant(int x, int y) {
-        if (level == 1) {
-            for (int i = 0; i < 4; i++) {
-                if ((diamants[i][1] == x) && (diamants[i][0] == y)) {
-                    return true;
-                }
-            }
-        }
-
-        if (level == 2) {
-            for (int i = 0; i < 4; i++) {
-                if ((diamants2[i][1] == x) && (diamants2[i][0] == y)) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    // met à jour la position d'un diamant
-    private void UpdateDiamant(int x, int y, int new_x, int new_y) {
-        if (level == 1) {
-            for (int i = 0; i < 4; i++) {
-                if ((diamants[i][1] == x) && (diamants[i][0] == y)) {
-                    diamants[i][1] = new_x;
-                    diamants[i][0] = new_y;
-                }
-            }
-        }
-
-        if (level == 2) {
-            for (int i = 0; i < 4; i++) {
-                if ((diamants2[i][1] == x) && (diamants2[i][0] == y)) {
-                    diamants2[i][1] = new_x;
-                    diamants2[i][0] = new_y;
-                }
-            }
-        }
-    }
-    // fonction permettant de recuperer les retours clavier
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-
-        Log.i("-> FCT <-", "onKeyUp: "+ keyCode);
-
-        int xTmpPlayer	= xPlayer;
-        int yTmpPlayer  = yPlayer;
-        int xchange 	= 0;
-        int ychange 	= 0;
-
-
-        if (keyCode == KeyEvent.KEYCODE_0) {
-            initparameters();
-        }
-
-        if (keyCode == KeyEvent.KEYCODE_DPAD_UP) {
-            ychange = -1;
-            Log.i("HAUT","X:" + xPlayer + ", Y:" + yPlayer);
-
-        }
-
-        if (keyCode == KeyEvent.KEYCODE_DPAD_DOWN) {
-            ychange = 1;
-            Log.i("BAS","X:" + xPlayer + ", Y:" + yPlayer);
-        }
-
-
-        if (keyCode == KeyEvent.KEYCODE_DPAD_LEFT) {
-            xchange = -1;
-            Log.i("GAUCHE","X:" + xPlayer + ", Y:" + yPlayer);
-        }
-
-        if (keyCode == KeyEvent.KEYCODE_DPAD_RIGHT) {
-            xchange = 1;
-            Log.i("DROITE","X:" + xPlayer + ", Y:" + yPlayer);
-        }
-
-
-
-
-
-        xPlayer = xPlayer+ xchange;
-        yPlayer = yPlayer+ ychange;
-
-        if (IsOut(xPlayer, yPlayer) || IsCell(xPlayer, yPlayer, CST_block)) {
-            xPlayer = xTmpPlayer;
-            yPlayer = yTmpPlayer;
-        } else if (IsDiamant(xPlayer, yPlayer)) {
-            int xTmpDiamant = xPlayer;
-            int yTmpDiamant = yPlayer;
-            xTmpDiamant = xTmpDiamant+ xchange;
-            yTmpDiamant = yTmpDiamant+ ychange;
-            if (IsOut(xTmpDiamant, yTmpDiamant) || IsCell(xTmpDiamant, yTmpDiamant, CST_block) || IsDiamant(xTmpDiamant, yTmpDiamant)) {
-                xPlayer = xTmpPlayer;
-                yPlayer = yTmpPlayer;
-            } else {
-                UpdateDiamant(xTmpDiamant- xchange, yTmpDiamant- ychange, xTmpDiamant, yTmpDiamant);
-            }
-        }
-        return true;
-    }
 
 
    /* public void FoundColour(int y,int x){
@@ -1215,7 +1000,7 @@ class Color {
             onKeyDown(KeyEvent.KEYCODE_DPAD_LEFT, null);
         } else if (event.getX() > getWidth() - 50) {
             onKeyDown(KeyEvent.KEYCODE_DPAD_RIGHT, null);
-        } else if (isWon() == true && (event.getX() >= 155 && event.getX() <= 175 && event.getY() >= 255 && event.getY() <= 275)) {
+        } /*else if (isWon() == true && (event.getX() >= 155 && event.getX() <= 175 && event.getY() >= 255 && event.getY() <= 275)) {
 
             if (level == 1) {
                 level = 2;
@@ -1224,7 +1009,7 @@ class Color {
                 level = 1;
                 initparameters();
             }
-        }
+        }*/
 
         return super.onTouchEvent(event);
     }
