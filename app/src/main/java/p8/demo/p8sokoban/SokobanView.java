@@ -678,6 +678,521 @@ class Color {
             }
         }
     }*/
+    
+    
+    
+    public void position_color(int j,int i){
+        
+        
+        int y=j;
+        int x=i;
+        
+        int a=0;
+        Color color_tab[]=new Color[4];
+        for (int z=0;z<4;z++) {
+            
+            color_tab[x] = new Color();
+        }
+        
+        
+        if (y==0 && x==0){  // si la case sur laquelle on appuie est celle du coin gauche haut du tableau
+            
+            while(x<carteWidth){
+                
+                if(carte[y][x]==1 || carte[y][x]==2 || carte[y][x] == 3 || carte[y][x] == 4 ){
+                    
+                    
+                    
+                    color_tab[a]=new Color(carte[y][x],y,x);
+                    a++;
+                    
+                    
+                    break;
+                }
+                
+                x++;
+                
+            }
+            
+            x=i;
+            
+            while(y<carteHeight){
+                
+                
+                if(carte[y][x]==1||carte[y][x]==2||carte[y][x]==3||carte[y][x]==4){
+                    
+                    
+                    
+                    color_tab[a]=new Color(carte[y][x],y,x);
+                    a++;
+                    
+                    
+                    break;
+                }
+                
+                y++;
+                
+            }
+            
+            y=j;
+            
+        }
+        
+        
+        
+        else if (y==0 && x==carteWidth){ // si la case sur laquelle on appuie est celle du coin droit haut du tableau
+            
+            while(x>0){
+                
+                if(carte[y][x]==1||carte[y][x]==2||carte[y][x]==3||carte[y][x]==4){
+                    
+                    
+                    
+                    color_tab[a]=new Color(carte[y][x],y,x);
+                    a++;
+                    
+                    
+                    break;
+                }
+                
+                x--;
+                
+            }
+            
+            x=i;
+            
+            while(y<carteHeight){
+                
+                
+                if(carte[y][x]==1||carte[y][x]==2||carte[y][x]==3||carte[y][x]==4){
+                    
+                    
+                    
+                    color_tab[a]=new Color(carte[y][x],y,x);
+                    a++;
+                    
+                    
+                    break;
+                }
+                
+                y++;
+                
+            }
+            y=j;
+        }
+        /*  YxyxyxyxyxyxyxyxyxyxyxyxyxyxyxxyxyxyxyxyxyxyxyxyxyxyxyxyxyxyxxyxyxyxyxyxxyxyX  */
+        
+        else if (y==carteHeight && x==0){ // si la case sur laquelle on appuie est celle du coin gauche bas du tableau
+            
+            while(x<carteWidth){
+                
+                if(carte[y][x]==1||carte[y][x]==2||carte[y][x]==3||carte[y][x]==4){
+                    
+                    
+                    
+                    
+                    color_tab[a]=new Color(carte[y][x],y,x);
+                    a++;
+                    
+                    
+                    break;
+                }
+                x++;
+            }
+            x=i;
+            
+            while(y>0){
+                
+                if(carte[y][x]==1||carte[y][x]==2||carte[y][x]==3||carte[y][x]==4){
+                    
+                    
+                    
+                    
+                    color_tab[a]=new Color(carte[y][x],y,x);
+                    a++;
+                    
+                    
+                    break;
+                }
+                
+                y--;
+                
+            }
+            
+            y=j;
+        }
+        
+        
+        else if (y==carteHeight && x==carteWidth){ //si la case sur laquelle on appuie est celle du coin droite bas du tableau
+            
+            while(x>0){
+                
+                if(carte[y][x]==1||carte[y][x]==2||carte[y][x]==3||carte[y][x]==4){
+                    
+                    
+                    
+                    color_tab[a]=new Color(carte[y][x],y,x);
+                    a++;
+                    
+                    
+                    break;
+                }
+                
+                x--;
+                
+            }
+            x=i;
+            
+            while(y>0){
+                
+                
+                if(carte[y][x]==1||carte[y][x]==2||carte[y][x]==3||carte[y][x]==4){
+                    
+                    
+                    
+                    color_tab[a]=new Color(carte[y][x],y,x);
+                    a++;
+                    
+                    break;
+                }
+                
+                y--;
+                
+            }
+            y=j;
+            
+        }
+        
+        
+        /* yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy*/
+        
+        else if (y==0){ // verifier si la hauteur est au niveau de la case la plus en haut
+            
+            
+            while(x<carteWidth){
+                
+                if(carte[y][x]==1||carte[y][x]==2||carte[y][x]==3||carte[y][x]==4){
+                    
+                    
+                    
+                    color_tab[a]=new Color(carte[y][x],y,x);
+                    
+                    a++;
+                    break;
+                }
+                
+                x++;
+                
+            }
+            
+            x=i;
+            
+            while(y<carteHeight){
+                
+                
+                if(carte[y][x]==1||carte[y][x]==2||carte[y][x]==3||carte[y][x]==4){
+                    
+                    
+                    
+                    color_tab[a]=new Color(carte[y][x],y,x);
+                    
+                    a++;
+                    break;
+                }
+                
+                y++;
+                
+            }
+            y=j;
+            
+            while(x>0){
+                
+                if(carte[y][x]==1||carte[y][x]==2||carte[y][x]==3||carte[y][x]==4){
+                    
+                    
+                    
+                    color_tab[a]=new Color(carte[y][x],y,x);
+                    
+                    a++;
+                    
+                    break;
+                }
+                
+                x--;
+                
+            }
+            x=i;
+            
+        }
+        
+        else if (y==carteHeight){ // verifier si le max de HEIGHT est au niveau de la case la plus en bas
+            
+            
+            while(x<carteWidth){
+                
+                if(carte[y][x]==1||carte[y][x]==2||carte[y][x]==3||carte[y][x]==4){
+                    
+                    
+                    
+                    color_tab[a]=new Color(carte[y][x],y,x);
+                    
+                    a++;
+                    break;
+                }
+                
+                x++;
+                
+            }
+            
+            x=i;
+            
+            while(y>0){
+                
+                
+                if(carte[y][x]==1||carte[y][x]==2||carte[y][x]==3||carte[y][x]==4){
+                    
+                    
+                    
+                    color_tab[a]=new Color(carte[y][x],y,x);
+                    
+                    a++;
+                    break;
+                }
+                
+                y--;
+                
+            }
+            y=j;
+            
+            while(x>0){
+                
+                if(carte[y][x]==1||carte[y][x]==2||carte[y][x]==3||carte[y][x]==4){
+                    
+                    
+                    
+                    
+                    color_tab[a]=new Color(carte[y][x],y,x);
+                    
+                    a++;
+                    break;
+                }
+                
+                x--;
+                
+            }
+            
+            x=i;
+            
+            
+        }
+        
+        /* xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx*/
+        else if (x==0){
+            
+            
+            
+            while(y>0){
+                
+                
+                if(carte[y][x]==1||carte[y][x]==2||carte[y][x]==3||carte[y][x]==4){
+                    
+                    
+                    
+                    color_tab[a]=new Color(carte[y][x],y,x);
+                    
+                    a++;
+                    break;
+                }
+                
+                y--;
+            }
+            y=j;
+            
+            while(x<carteWidth){
+                
+                if(carte[y][x]==1||carte[y][x]==2||carte[y][x]==3||carte[y][x]==4){
+                    
+                    
+                    
+                    color_tab[a]=new Color(carte[y][x],y,x);
+                    
+                    a++;
+                    break;
+                }
+                
+                x++;
+                
+            }
+            
+            x=i;
+            
+            
+            while(y<carteHeight){
+                
+                if(carte[y][x]==1||carte[y][x]==2||carte[y][x]==3||carte[y][x]==4){
+                    
+                    
+                    
+                    color_tab[a]=new Color(carte[y][x],y,x);
+                    
+                    a++;
+                    break;
+                }
+                
+                y++;
+                
+            }
+            y=j;
+        }
+        
+        
+        else if (x==carteWidth){
+            
+            
+            while(y>0){
+                
+                
+                if(carte[y][x]==1||carte[y][x]==2||carte[y][x]==3||carte[y][x]==4){
+                    
+                    
+                    
+                    color_tab[a]=new Color(carte[y][x],y,x);
+                    
+                    a++;
+                    break;
+                }
+                
+                y--;
+            }
+            y=j;
+            
+            while(x>0){
+                
+                if(carte[y][x]==1||carte[y][x]==2||carte[y][x]==3||carte[y][x]==4){
+                    
+                    
+                    
+                    color_tab[a]=new Color(carte[y][x],y,x);
+                    
+                    a++;
+                    break;
+                }
+                
+                x--;
+                
+            }
+            x=i;
+            
+            
+            
+            while(y<carteHeight){
+                
+                
+                if(carte[y][x]==1||carte[y][x]==2||carte[y][x]==3||carte[y][x]==4){
+                    
+                    
+                    
+                    color_tab[a]=new Color(carte[y][x],y,x);
+                    
+                    a++;
+                    break;
+                }
+                
+                y++;
+                
+            }
+            
+            y=j;
+        }
+        
+        
+        /*   Le dernier cas est un cas quelconque dans lequel on ne risque pas de dépasser les limites du tableau si on cherche à droite ou dans une autre direction  */
+        
+        
+        
+        else {
+            
+            
+            
+            while(x<carteWidth){
+                
+                
+                if(carte[y][x]==1||carte[y][x]==2||carte[y][x]==3||carte[y][x]==4){
+                    
+                    
+                    
+                    
+                    color_tab[a]=new Color(carte[y][x],y,x);
+                    
+                    a++;
+                    break;
+                }
+                
+                x++;
+            }
+            x=i;
+            
+            while(y<carteHeight){
+                
+                
+                if(carte[y][x]==1||carte[y][x]==2||carte[y][x]==3||carte[y][x]==4){
+                    
+                    
+                    
+                    
+                    color_tab[a]=new Color(carte[y][x],y,x);
+                    
+                    a++;
+                    break;
+                }
+                y++;
+            }
+            y=j;
+            
+            
+            
+            while(x>0){
+                
+                if(carte[y][x]==1||carte[y][x]==2||carte[y][x]==3||carte[y][x]==4){
+                    
+                    
+                    
+                    
+                    color_tab[a]=new Color(carte[y][x],y,x);
+                    
+                    a++;
+                    break;
+                }
+                x--;
+                
+            }
+            x=i;
+            
+            while(y>0){
+                
+                
+                if(carte[y][x]==1||carte[y][x]==2||carte[y][x]==3||carte[y][x]==4){
+                    
+                    
+                    
+                    
+                    color_tab[a]=new Color(carte[y][x],y,x);
+                    
+                    a++;
+                    break;
+                }
+                
+                y--;
+            }
+            y=j;
+            
+        }
+        
+        
+        
+    }
+    
+
 
 
     // fonction permettant de recuperer les evenements tactiles
