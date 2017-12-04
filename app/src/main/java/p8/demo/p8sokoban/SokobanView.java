@@ -13,29 +13,30 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import java.util.Random;
+
 public class SokobanView extends SurfaceView implements SurfaceHolder.Callback, Runnable {
 
     // Declaration des images
-    private Bitmap 		block;
-    private Bitmap 		diamant;
-    private Bitmap rouge;
+    private Bitmap diamant;
+    private Bitmap bleuciel;
     private Bitmap vert;
-    private Bitmap magenta;
+    private Bitmap marron;
     private Bitmap jaune;
     private Bitmap cyan;
-    private Bitmap 		perso;
-    private Bitmap 		vide;
+    private Bitmap violet;
+    private Bitmap rose;
+    private Bitmap      vide;
     private Bitmap      vide1;
-    private Bitmap[] 	zone = new Bitmap[4];
-    private Bitmap 		up;
-    private Bitmap 		down;
-    private Bitmap 		left;
-    private Bitmap 		right;
-    private Bitmap 		win;
+    private Bitmap      up;
+    private Bitmap      down;
+    private Bitmap      left;
+    private Bitmap      right;
+    private Bitmap      win;
 
     // Declaration des objets Ressources et Context permettant d'accéder aux ressources de notre application et de les charger
-    private Resources 	mRes;
-    private Context 	mContext;
+    private Resources   mRes;
+    private Context     mContext;
 
     // tableau modelisant la carte du jeu
     int[][] carte;
@@ -56,20 +57,45 @@ public class SokobanView extends SurfaceView implements SurfaceHolder.Callback, 
     static final int CST_diamant = 0;
 
     static final int CST_vert = 1;
-    static final int CST_magenta = 2;
-    static final int CST_rouge = 3;
+    static final int CST_marron = 2;
+    static final int CST_bleuciel = 3;
     static final int CST_cyan = 4;
     static final int CST_jaune = 5;
-    static final int CST_blanc = 6;
-    static final int CST_gris = 7;
-    static final int CST_vid = 8;
+    static final int CST_violet = 6;
+    static final int CST_rose = 7;
+
+    static final int CST_blanc = 8;
+    static final int CST_gris = 9;
+    static final int CST_vid = 10;
 
 
-    static final int CST_block = 9;
-    static final int CST_perso = 11;
-    static final int CST_zone = 10;
+
+    class Color {//tab
+
+        int color_one;
+        int row;
+        int column;
 
 
+        Color() {
+
+            color_one = 10;
+            row = 10;
+            column = 10;
+
+
+        }
+
+
+        Color(int a ,int y,int x){
+
+            color_one=a;
+            row=y;
+            column=x;
+
+        }
+
+    }
 
     // tableau de reference du terrain
     int[][] ref = {
@@ -90,73 +116,9 @@ public class SokobanView extends SurfaceView implements SurfaceHolder.Callback, 
 
 
 
-    // tableau de reference du terrain
-    int[][] ref2 = {
-            {CST_vide, CST_block, CST_block, CST_block, CST_block, CST_block, CST_block, CST_block, CST_block, CST_vide},
-            {CST_block, CST_vide, CST_vide, CST_vide, CST_vide, CST_vide, CST_vide, CST_block, CST_block, CST_block},
-            {CST_block, CST_vide, CST_vide, CST_vide, CST_vide, CST_vide, CST_vide, CST_vide, CST_vide, CST_block},
-            {CST_block, CST_vide, CST_block, CST_block, CST_vide, CST_vide, CST_block, CST_vide, CST_vide, CST_block},
-            {CST_block, CST_vide, CST_vide, CST_vide, CST_vide, CST_vide, CST_vide, CST_vide, CST_vide, CST_block},
-            {CST_block, CST_vide, CST_block, CST_vide, CST_vide, CST_block, CST_vide, CST_vide, CST_vide, CST_block},
-            {CST_block, CST_vide, CST_vide, CST_vide, CST_block, CST_block, CST_vide, CST_block, CST_vide, CST_block},
-            {CST_block, CST_vide, CST_vide, CST_vide, CST_vide, CST_vide, CST_vide, CST_vide, CST_vide, CST_block},
-            {CST_block, CST_block, CST_vide, CST_zone, CST_zone, CST_zone, CST_zone, CST_vide, CST_block, CST_block},
-            {CST_vide, CST_block, CST_block, CST_block, CST_block, CST_block, CST_block, CST_block, CST_block, CST_vide}
-    };
-
-
-    // position de reference des diamants
-    int [][] refdiamants   = {
-            {2, 3},
-            {2, 6},
-            {6, 3},
-            {6, 6}
-    };
 
 
 
-
-
-
-
-
-
-    // position de reference des diamants
-    int[][] refdiamants2 = {
-            {4, 2},
-            {3, 7},
-            {6, 2},
-            {2, 2}
-    };
-
-
-
-    // position de reference du joueur
-    int refxPlayer = 4;
-    int refyPlayer = 1;
-
-    // position courante des diamants
-    int [][] diamants   = {
-            {2, 3},
-            {2, 6},
-            {6, 3},
-            {6, 6}
-    };
-
-
-    // position courante des diamants
-    int[][] diamants2 = {
-            {4, 3},
-            {4, 6},
-            {6, 2},
-            {2, 2}
-    };
-
-
-
-    // position courante du joueur
-    int xPlayer = 4;
-    int yPlayer = 1;
 
     /* compteur et max pour animer les zones d'arriv�e des diamants */
     int currentStepZone = 0;
@@ -186,18 +148,14 @@ public class SokobanView extends SurfaceView implements SurfaceHolder.Callback, 
         // chargement des images
         mContext = context;
         mRes = mContext.getResources();
-        block = BitmapFactory.decodeResource(mRes, R.drawable.block);
-        diamant = BitmapFactory.decodeResource(mRes, R.drawable.bleu);
-        rouge = BitmapFactory.decodeResource(mRes, R.drawable.rouge);
-        vert = BitmapFactory.decodeResource(mRes, R.drawable.vert);
-        jaune = BitmapFactory.decodeResource(mRes, R.drawable.jaune);
+        diamant = BitmapFactory.decodeResource(mRes, R.drawable.blue);
+        bleuciel = BitmapFactory.decodeResource(mRes, R.drawable.bleueciel);
+        vert = BitmapFactory.decodeResource(mRes, R.drawable.green);
+        jaune = BitmapFactory.decodeResource(mRes, R.drawable.yellow);
         cyan = BitmapFactory.decodeResource(mRes, R.drawable.cyan);
-        magenta = BitmapFactory.decodeResource(mRes, R.drawable.magenta);
-        perso = BitmapFactory.decodeResource(mRes, R.drawable.perso);
-        zone[0] = BitmapFactory.decodeResource(mRes, R.drawable.zone_01);
-        zone[1] = BitmapFactory.decodeResource(mRes, R.drawable.zone_02);
-        zone[2] = BitmapFactory.decodeResource(mRes, R.drawable.zone_03);
-        zone[3] = BitmapFactory.decodeResource(mRes, R.drawable.zone_04);
+        marron = BitmapFactory.decodeResource(mRes, R.drawable.darkgreen);
+        rose = BitmapFactory.decodeResource(mRes, R.drawable.rose);
+        violet = BitmapFactory.decodeResource(mRes, R.drawable.violet);
         vide = BitmapFactory.decodeResource(mRes, R.drawable.blanc);
         vide1 = BitmapFactory.decodeResource(mRes, R.drawable.gris);
         up = BitmapFactory.decodeResource(mRes, R.drawable.up);
@@ -226,12 +184,6 @@ public class SokobanView extends SurfaceView implements SurfaceHolder.Callback, 
                     carte[j][i] = ref[j][i];
                 }
             }
-        } else if (level == 2) {
-            for (int i = 0; i < carteHeight; i++) {
-                for (int j = 0; j < carteWidth; j++) {
-                    carte[j][i] = ref2[j][i];
-                }
-            }
         }
     }
 
@@ -255,19 +207,8 @@ public class SokobanView extends SurfaceView implements SurfaceHolder.Callback, 
         carteTopAnchor  = (getHeight()- carteHeight*carteTileSize)/2;
 
         carteLeftAnchor = (getWidth()- carteWidth*carteTileSize)/2;
-        xPlayer = refxPlayer;
-        yPlayer = refyPlayer;
-        if (level == 1) {
-            for (int i = 0; i < 4; i++) {
-                diamants[i][1] = refdiamants[i][1];
-                diamants[i][0] = refdiamants[i][0];
-            }
-        } else if (level == 2) {
-            for (int i = 0; i < 4; i++) {
-                diamants2[i][1] = refdiamants2[i][1];
-                diamants2[i][0] = refdiamants2[i][0];
-            }
-        }
+
+
         if ((cv_thread!=null) && (!cv_thread.isAlive())) {
             cv_thread.start();
             Log.e("-FCT-", "cv_thread.start()");
@@ -277,9 +218,9 @@ public class SokobanView extends SurfaceView implements SurfaceHolder.Callback, 
     // dessin des fleches , transfert des bitmaps vers un canvas
     private void paintarrow(Canvas canvas) {
         canvas.drawBitmap(up, (getWidth()-up.getWidth())/2, 0, null);
-        canvas.drawBitmap(down, (getWidth()-down.getWidth())/2, getHeight()-down.getHeight(), null);
-        canvas.drawBitmap(left, 0, (getHeight()-up.getHeight())/2, null);
-        canvas.drawBitmap(right, getWidth()-right.getWidth(), (getHeight()-up.getHeight())/2, null);
+        //canvas.drawBitmap(down, (getWidth()-down.getWidth())/2, getHeight()-down.getHeight(), null);
+        //canvas.drawBitmap(left, 0, (getHeight()-up.getHeight())/2, null);
+        //canvas.drawBitmap(right, getWidth()-right.getWidth(), (getHeight()-up.getHeight())/2, null);
     }
 
     // dessin du gagne si gagne
@@ -306,41 +247,30 @@ public class SokobanView extends SurfaceView implements SurfaceHolder.Callback, 
 
        /* for (int i = 0; i < carteHeight; i++) {
             for (int j = 0; j < carteWidth; j++) {
-
-
                 if (carte[i][j] == 6 || carte[i][j] == 7) {
                     int value = r.nextInt(5);
-
                     carte[i][j] = value;
                     Log.i("LE RANDOOOOOM", "ESSST:" + value);
                     //canvas.drawBitmap(vert,carteLeftAnchor+ j*carteTileSize, carteTopAnchor+ i*carteTileSize, null);
-
-
                 }
-
                 if (carte[i][j] == CST_diamant) {
                     canvas.drawBitmap(diamant, carteLeftAnchor + j * carteTileSize, carteTopAnchor + i * carteTileSize, null);
                 }
-
                 if (carte[i][j] == CST_magenta) {
                     canvas.drawBitmap(magenta, carteLeftAnchor + j * carteTileSize, carteTopAnchor + i * carteTileSize, null);
                 }
                 if (carte[i][j] == CST_cyan) {
                     canvas.drawBitmap(cyan, carteLeftAnchor + j * carteTileSize, carteTopAnchor + i * carteTileSize, null);
                 }
-
                 if (carte[i][j] == CST_vert) {
                     canvas.drawBitmap(vert, carteLeftAnchor + j * carteTileSize, carteTopAnchor + i * carteTileSize, null);
                 }
-
                 if (carte[i][j] == CST_jaune) {
                     canvas.drawBitmap(jaune, carteLeftAnchor + j * carteTileSize, carteTopAnchor + i * carteTileSize, null);
                 }
-
                 if (carte[i][j] == CST_rouge) {
                     canvas.drawBitmap(rouge, carteLeftAnchor + j * carteTileSize, carteTopAnchor + i * carteTileSize, null);
                 }
-
                 /*switch (carte[i][j]) {
                     case CST_block:
                         canvas.drawBitmap(block, carteLeftAnchor+ j*carteTileSize, carteTopAnchor+ i*carteTileSize, null);
@@ -355,8 +285,6 @@ public class SokobanView extends SurfaceView implements SurfaceHolder.Callback, 
                         canvas.drawBitmap(vide1,carteLeftAnchor+ j*carteTileSize, carteTopAnchor+ i*carteTileSize, null);
                         break;
                 }
-
-
             }
         }*/
     }
@@ -365,6 +293,7 @@ public class SokobanView extends SurfaceView implements SurfaceHolder.Callback, 
     public void initColor()
     {
 
+        Random r= new Random();
         //Initialisation de 10 cases vides
         for(int i = 0 ; i<10 ; i++)
         {
@@ -393,65 +322,56 @@ public class SokobanView extends SurfaceView implements SurfaceHolder.Callback, 
     private void paintcolor(Canvas canvas) {
         if (level == 1) {
 
-                    for (int i = 0; i < carteHeight ; i++)
-                    {
-                        for (int j = 0; j < carteWidth ; j++) {
+            for (int i = 0; i < carteHeight ; i++)
+            {
+                for (int j = 0; j < carteWidth ; j++) {
 
-                            switch (carte[i][j]) {
+                    switch (carte[i][j]) {
 
 
-                                case CST_diamant:
-                                    canvas.drawBitmap(diamant, carteLeftAnchor + j * carteTileSize, carteTopAnchor + i * carteTileSize, null);
-                                    break;
+                        case CST_diamant:
+                            canvas.drawBitmap(diamant, carteLeftAnchor + j * carteTileSize, carteTopAnchor + i * carteTileSize, null);
+                            break;
 
-                                case CST_magenta:
-                                    canvas.drawBitmap(magenta, carteLeftAnchor + j * carteTileSize, carteTopAnchor + i * carteTileSize, null);
-                                    break;
+                        case CST_marron:
+                            canvas.drawBitmap(marron, carteLeftAnchor + j * carteTileSize, carteTopAnchor + i * carteTileSize, null);
+                            break;
 
-                                case CST_rouge:
-                                    canvas.drawBitmap(rouge, carteLeftAnchor + j * carteTileSize, carteTopAnchor + i * carteTileSize, null);
-                                    break;
+                        case CST_bleuciel:
+                            canvas.drawBitmap(bleuciel, carteLeftAnchor + j * carteTileSize, carteTopAnchor + i * carteTileSize, null);
+                            break;
 
-                                case CST_cyan:
-                                    canvas.drawBitmap(cyan, carteLeftAnchor + j * carteTileSize, carteTopAnchor + i * carteTileSize, null);
-                                    break;
+                        case CST_cyan:
+                            canvas.drawBitmap(cyan, carteLeftAnchor + j * carteTileSize, carteTopAnchor + i * carteTileSize, null);
+                            break;
 
-                                case CST_vert:
-                                    canvas.drawBitmap(vert, carteLeftAnchor + j * carteTileSize, carteTopAnchor + i * carteTileSize, null);
-                                    break;
+                        case CST_vert:
+                            canvas.drawBitmap(vert, carteLeftAnchor + j * carteTileSize, carteTopAnchor + i * carteTileSize, null);
+                            break;
 
-                                case CST_jaune:
-                                    canvas.drawBitmap(jaune, carteLeftAnchor + j * carteTileSize, carteTopAnchor + i * carteTileSize, null);
-                                    break;
-                            }
-                        }
+                        case CST_jaune:
+                            canvas.drawBitmap(jaune, carteLeftAnchor + j * carteTileSize, carteTopAnchor + i * carteTileSize, null);
+                            break;
 
+                        case CST_rose:
+                            canvas.drawBitmap(rose, carteLeftAnchor + j * carteTileSize, carteTopAnchor + i * carteTileSize, null);
+                            break;
+
+                        case CST_violet:
+                            canvas.drawBitmap(violet, carteLeftAnchor + j * carteTileSize, carteTopAnchor + i * carteTileSize, null);
+                            break;
                     }
-            }
-        }    
+                }
 
-    // dessin du curseur du joueur
-    private void paintPlayer(Canvas canvas) {
-        canvas.drawBitmap(perso,carteLeftAnchor+ xPlayer*carteTileSize, carteTopAnchor+ yPlayer*carteTileSize, null);
-    }
-
-    // dessin des diamants
-    private void paintdiamants(Canvas canvas) {
-        if (level == 1) {
-            for (int i = 0; i < 4; i++) {
-                canvas.drawBitmap(diamant, carteLeftAnchor + diamants[i][1] * carteTileSize, carteTopAnchor + diamants[i][0] * carteTileSize, null);
-            }
-        }
-
-        if (level == 2) {
-            for (int i = 0; i < 4; i++) {
-                canvas.drawBitmap(diamant, carteLeftAnchor + diamants2[i][1] * carteTileSize, carteTopAnchor + diamants2[i][0] * carteTileSize, null);
             }
         }
     }
+   
+
+
 
     // permet d'identifier si la partie est gagnee (tous les diamants à leur place)
-    private boolean isWon() {
+    /*private boolean isWon() {
         if (level == 1) {
             for (int i = 0; i < 4; i++) {
                 if (!IsCell(diamants[i][1], diamants[i][0], CST_zone)) {
@@ -459,32 +379,23 @@ public class SokobanView extends SurfaceView implements SurfaceHolder.Callback, 
                 }
             }
         }
-
-        if (level == 2) {
-            for (int i = 0; i < 4; i++) {
-                if (!IsCell(diamants2[i][1], diamants2[i][0], CST_zone)) {
-                    return false;
-                }
-            }
-        }
         return true;
-    }
+    }*/
 
     // dessin du jeu (fond uni, en fonction du jeu gagne ou pas dessin du plateau et du joueur des diamants et des fleches)
     private void nDraw(Canvas canvas) {
         canvas.drawRGB(44,44,44);
-        if (isWon()) {
+       /* if (isWon()) {
             paintcarte(canvas);
             paintwin(canvas);
-
             //initparameters();
-        } else {
+        } else*/
             paintcarte(canvas);
             paintcolor(canvas);            
             //paintPlayer(canvas);
             //paintdiamants(canvas);
             //paintarrow(canvas);
-        }
+
 
     }
 
@@ -512,7 +423,7 @@ public class SokobanView extends SurfaceView implements SurfaceHolder.Callback, 
         Canvas c = null;
         while (in) {
             try {
-                cv_thread.sleep(40);
+                Thread.sleep(40);
                 currentStepZone = (currentStepZone + 1) % maxStepZone;
                 try {
                     c = holder.lockCanvas(null);//obtient un canvas pour pouvoir dessiner dans cette surface
@@ -534,122 +445,14 @@ public class SokobanView extends SurfaceView implements SurfaceHolder.Callback, 
         if ((x < 0) || (x > carteWidth- 1)) {
             return true;
         }
-        if ((y < 0) || (y > carteHeight- 1)) {
-            return true;
-        }
-        return false;
+        return (y < 0) || (y > carteHeight - 1);
     }
 
     //controle de la valeur d'une cellule
     private boolean IsCell(int x, int y, int mask) {
-        if (carte[y][x] == mask) {
-            return true;
-        }
-        return false;
+        return carte[y][x] == mask;
     }
 
-    // controle si nous avons un diamant dans la case
-    private boolean IsDiamant(int x, int y) {
-        if (level == 1) {
-            for (int i = 0; i < 4; i++) {
-                if ((diamants[i][1] == x) && (diamants[i][0] == y)) {
-                    return true;
-                }
-            }
-        }
-
-        if (level == 2) {
-            for (int i = 0; i < 4; i++) {
-                if ((diamants2[i][1] == x) && (diamants2[i][0] == y)) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    // met à jour la position d'un diamant
-    private void UpdateDiamant(int x, int y, int new_x, int new_y) {
-        if (level == 1) {
-            for (int i = 0; i < 4; i++) {
-                if ((diamants[i][1] == x) && (diamants[i][0] == y)) {
-                    diamants[i][1] = new_x;
-                    diamants[i][0] = new_y;
-                }
-            }
-        }
-
-        if (level == 2) {
-            for (int i = 0; i < 4; i++) {
-                if ((diamants2[i][1] == x) && (diamants2[i][0] == y)) {
-                    diamants2[i][1] = new_x;
-                    diamants2[i][0] = new_y;
-                }
-            }
-        }
-    }
-    // fonction permettant de recuperer les retours clavier
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-
-        Log.i("-> FCT <-", "onKeyUp: "+ keyCode);
-
-        int xTmpPlayer	= xPlayer;
-        int yTmpPlayer  = yPlayer;
-        int xchange 	= 0;
-        int ychange 	= 0;
-
-
-        if (keyCode == KeyEvent.KEYCODE_0) {
-            initparameters();
-        }
-
-        if (keyCode == KeyEvent.KEYCODE_DPAD_UP) {
-            ychange = -1;
-            Log.i("HAUT","X:" + xPlayer + ", Y:" + yPlayer);
-
-        }
-
-        if (keyCode == KeyEvent.KEYCODE_DPAD_DOWN) {
-            ychange = 1;
-            Log.i("BAS","X:" + xPlayer + ", Y:" + yPlayer);
-        }
-
-
-        if (keyCode == KeyEvent.KEYCODE_DPAD_LEFT) {
-            xchange = -1;
-            Log.i("GAUCHE","X:" + xPlayer + ", Y:" + yPlayer);
-        }
-
-        if (keyCode == KeyEvent.KEYCODE_DPAD_RIGHT) {
-            xchange = 1;
-            Log.i("DROITE","X:" + xPlayer + ", Y:" + yPlayer);
-        }
-
-
-
-
-
-        xPlayer = xPlayer+ xchange;
-        yPlayer = yPlayer+ ychange;
-
-        if (IsOut(xPlayer, yPlayer) || IsCell(xPlayer, yPlayer, CST_block)) {
-            xPlayer = xTmpPlayer;
-            yPlayer = yTmpPlayer;
-        } else if (IsDiamant(xPlayer, yPlayer)) {
-            int xTmpDiamant = xPlayer;
-            int yTmpDiamant = yPlayer;
-            xTmpDiamant = xTmpDiamant+ xchange;
-            yTmpDiamant = yTmpDiamant+ ychange;
-            if (IsOut(xTmpDiamant, yTmpDiamant) || IsCell(xTmpDiamant, yTmpDiamant, CST_block) || IsDiamant(xTmpDiamant, yTmpDiamant)) {
-                xPlayer = xTmpPlayer;
-                yPlayer = yTmpPlayer;
-            } else {
-                UpdateDiamant(xTmpDiamant- xchange, yTmpDiamant- ychange, xTmpDiamant, yTmpDiamant);
-            }
-        }
-        return true;
-    }
 
 
    /* public void FoundColour(int y,int x){
@@ -660,6 +463,521 @@ public class SokobanView extends SurfaceView implements SurfaceHolder.Callback, 
             }
         }
     }*/
+    
+    
+    
+    public void position_color(int j,int i){
+        
+        
+        int y=j;
+        int x=i;
+        
+        int a=0;
+        Color color_tab[]=new Color[4];
+        for (int z=0;z<4;z++) {
+            
+            color_tab[x] = new Color();
+        }
+        
+        
+        if (y==0 && x==0){  // si la case sur laquelle on appuie est celle du coin gauche haut du tableau
+            
+            while(x<carteWidth){
+                
+                if(carte[y][x]==1 || carte[y][x]==2 || carte[y][x] == 3 || carte[y][x] == 4 ){
+                    
+                    
+                    
+                    color_tab[a]=new Color(carte[y][x],y,x);
+                    a++;
+                    
+                    
+                    break;
+                }
+                
+                x++;
+                
+            }
+            
+            x=i;
+            
+            while(y<carteHeight){
+                
+                
+                if(carte[y][x]==1||carte[y][x]==2||carte[y][x]==3||carte[y][x]==4){
+                    
+                    
+                    
+                    color_tab[a]=new Color(carte[y][x],y,x);
+                    a++;
+                    
+                    
+                    break;
+                }
+                
+                y++;
+                
+            }
+            
+            y=j;
+            
+        }
+        
+        
+        
+        else if (y==0 && x==carteWidth){ // si la case sur laquelle on appuie est celle du coin droit haut du tableau
+            
+            while(x>0){
+                
+                if(carte[y][x]==1||carte[y][x]==2||carte[y][x]==3||carte[y][x]==4){
+                    
+                    
+                    
+                    color_tab[a]=new Color(carte[y][x],y,x);
+                    a++;
+                    
+                    
+                    break;
+                }
+                
+                x--;
+                
+            }
+            
+            x=i;
+            
+            while(y<carteHeight){
+                
+                
+                if(carte[y][x]==1||carte[y][x]==2||carte[y][x]==3||carte[y][x]==4){
+                    
+                    
+                    
+                    color_tab[a]=new Color(carte[y][x],y,x);
+                    a++;
+                    
+                    
+                    break;
+                }
+                
+                y++;
+                
+            }
+            y=j;
+        }
+        /*  YxyxyxyxyxyxyxyxyxyxyxyxyxyxyxxyxyxyxyxyxyxyxyxyxyxyxyxyxyxyxxyxyxyxyxyxxyxyX  */
+        
+        else if (y==carteHeight && x==0){ // si la case sur laquelle on appuie est celle du coin gauche bas du tableau
+            
+            while(x<carteWidth){
+                
+                if(carte[y][x]==1||carte[y][x]==2||carte[y][x]==3||carte[y][x]==4){
+                    
+                    
+                    
+                    
+                    color_tab[a]=new Color(carte[y][x],y,x);
+                    a++;
+                    
+                    
+                    break;
+                }
+                x++;
+            }
+            x=i;
+            
+            while(y>0){
+                
+                if(carte[y][x]==1||carte[y][x]==2||carte[y][x]==3||carte[y][x]==4){
+                    
+                    
+                    
+                    
+                    color_tab[a]=new Color(carte[y][x],y,x);
+                    a++;
+                    
+                    
+                    break;
+                }
+                
+                y--;
+                
+            }
+            
+            y=j;
+        }
+        
+        
+        else if (y==carteHeight && x==carteWidth){ //si la case sur laquelle on appuie est celle du coin droite bas du tableau
+            
+            while(x>0){
+                
+                if(carte[y][x]==1||carte[y][x]==2||carte[y][x]==3||carte[y][x]==4){
+                    
+                    
+                    
+                    color_tab[a]=new Color(carte[y][x],y,x);
+                    a++;
+                    
+                    
+                    break;
+                }
+                
+                x--;
+                
+            }
+            x=i;
+            
+            while(y>0){
+                
+                
+                if(carte[y][x]==1||carte[y][x]==2||carte[y][x]==3||carte[y][x]==4){
+                    
+                    
+                    
+                    color_tab[a]=new Color(carte[y][x],y,x);
+                    a++;
+                    
+                    break;
+                }
+                
+                y--;
+                
+            }
+            y=j;
+            
+        }
+        
+        
+        /* yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy*/
+        
+        else if (y==0){ // verifier si la hauteur est au niveau de la case la plus en haut
+            
+            
+            while(x<carteWidth){
+                
+                if(carte[y][x]==1||carte[y][x]==2||carte[y][x]==3||carte[y][x]==4){
+                    
+                    
+                    
+                    color_tab[a]=new Color(carte[y][x],y,x);
+                    
+                    a++;
+                    break;
+                }
+                
+                x++;
+                
+            }
+            
+            x=i;
+            
+            while(y<carteHeight){
+                
+                
+                if(carte[y][x]==1||carte[y][x]==2||carte[y][x]==3||carte[y][x]==4){
+                    
+                    
+                    
+                    color_tab[a]=new Color(carte[y][x],y,x);
+                    
+                    a++;
+                    break;
+                }
+                
+                y++;
+                
+            }
+            y=j;
+            
+            while(x>0){
+                
+                if(carte[y][x]==1||carte[y][x]==2||carte[y][x]==3||carte[y][x]==4){
+                    
+                    
+                    
+                    color_tab[a]=new Color(carte[y][x],y,x);
+                    
+                    a++;
+                    
+                    break;
+                }
+                
+                x--;
+                
+            }
+            x=i;
+            
+        }
+        
+        else if (y==carteHeight){ // verifier si le max de HEIGHT est au niveau de la case la plus en bas
+            
+            
+            while(x<carteWidth){
+                
+                if(carte[y][x]==1||carte[y][x]==2||carte[y][x]==3||carte[y][x]==4){
+                    
+                    
+                    
+                    color_tab[a]=new Color(carte[y][x],y,x);
+                    
+                    a++;
+                    break;
+                }
+                
+                x++;
+                
+            }
+            
+            x=i;
+            
+            while(y>0){
+                
+                
+                if(carte[y][x]==1||carte[y][x]==2||carte[y][x]==3||carte[y][x]==4){
+                    
+                    
+                    
+                    color_tab[a]=new Color(carte[y][x],y,x);
+                    
+                    a++;
+                    break;
+                }
+                
+                y--;
+                
+            }
+            y=j;
+            
+            while(x>0){
+                
+                if(carte[y][x]==1||carte[y][x]==2||carte[y][x]==3||carte[y][x]==4){
+                    
+                    
+                    
+                    
+                    color_tab[a]=new Color(carte[y][x],y,x);
+                    
+                    a++;
+                    break;
+                }
+                
+                x--;
+                
+            }
+            
+            x=i;
+            
+            
+        }
+        
+        /* xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx*/
+        else if (x==0){
+            
+            
+            
+            while(y>0){
+                
+                
+                if(carte[y][x]==1||carte[y][x]==2||carte[y][x]==3||carte[y][x]==4){
+                    
+                    
+                    
+                    color_tab[a]=new Color(carte[y][x],y,x);
+                    
+                    a++;
+                    break;
+                }
+                
+                y--;
+            }
+            y=j;
+            
+            while(x<carteWidth){
+                
+                if(carte[y][x]==1||carte[y][x]==2||carte[y][x]==3||carte[y][x]==4){
+                    
+                    
+                    
+                    color_tab[a]=new Color(carte[y][x],y,x);
+                    
+                    a++;
+                    break;
+                }
+                
+                x++;
+                
+            }
+            
+            x=i;
+            
+            
+            while(y<carteHeight){
+                
+                if(carte[y][x]==1||carte[y][x]==2||carte[y][x]==3||carte[y][x]==4){
+                    
+                    
+                    
+                    color_tab[a]=new Color(carte[y][x],y,x);
+                    
+                    a++;
+                    break;
+                }
+                
+                y++;
+                
+            }
+            y=j;
+        }
+        
+        
+        else if (x==carteWidth){
+            
+            
+            while(y>0){
+                
+                
+                if(carte[y][x]==1||carte[y][x]==2||carte[y][x]==3||carte[y][x]==4){
+                    
+                    
+                    
+                    color_tab[a]=new Color(carte[y][x],y,x);
+                    
+                    a++;
+                    break;
+                }
+                
+                y--;
+            }
+            y=j;
+            
+            while(x>0){
+                
+                if(carte[y][x]==1||carte[y][x]==2||carte[y][x]==3||carte[y][x]==4){
+                    
+                    
+                    
+                    color_tab[a]=new Color(carte[y][x],y,x);
+                    
+                    a++;
+                    break;
+                }
+                
+                x--;
+                
+            }
+            x=i;
+            
+            
+            
+            while(y<carteHeight){
+                
+                
+                if(carte[y][x]==1||carte[y][x]==2||carte[y][x]==3||carte[y][x]==4){
+                    
+                    
+                    
+                    color_tab[a]=new Color(carte[y][x],y,x);
+                    
+                    a++;
+                    break;
+                }
+                
+                y++;
+                
+            }
+            
+            y=j;
+        }
+        
+        
+        /*   Le dernier cas est un cas quelconque dans lequel on ne risque pas de dépasser les limites du tableau si on cherche à droite ou dans une autre direction  */
+        
+        
+        
+        else {
+            
+            
+            
+            while(x<carteWidth){
+                
+                
+                if(carte[y][x]==1||carte[y][x]==2||carte[y][x]==3||carte[y][x]==4){
+                    
+                    
+                    
+                    
+                    color_tab[a]=new Color(carte[y][x],y,x);
+                    
+                    a++;
+                    break;
+                }
+                
+                x++;
+            }
+            x=i;
+            
+            while(y<carteHeight){
+                
+                
+                if(carte[y][x]==1||carte[y][x]==2||carte[y][x]==3||carte[y][x]==4){
+                    
+                    
+                    
+                    
+                    color_tab[a]=new Color(carte[y][x],y,x);
+                    
+                    a++;
+                    break;
+                }
+                y++;
+            }
+            y=j;
+            
+            
+            
+            while(x>0){
+                
+                if(carte[y][x]==1||carte[y][x]==2||carte[y][x]==3||carte[y][x]==4){
+                    
+                    
+                    
+                    
+                    color_tab[a]=new Color(carte[y][x],y,x);
+                    
+                    a++;
+                    break;
+                }
+                x--;
+                
+            }
+            x=i;
+            
+            while(y>0){
+                
+                
+                if(carte[y][x]==1||carte[y][x]==2||carte[y][x]==3||carte[y][x]==4){
+                    
+                    
+                    
+                    
+                    color_tab[a]=new Color(carte[y][x],y,x);
+                    
+                    a++;
+                    break;
+                }
+                
+                y--;
+            }
+            y=j;
+            
+        }
+        
+        
+        
+    }
+    
+
 
 
     // fonction permettant de recuperer les evenements tactiles
@@ -682,8 +1000,7 @@ public class SokobanView extends SurfaceView implements SurfaceHolder.Callback, 
             onKeyDown(KeyEvent.KEYCODE_DPAD_LEFT, null);
         } else if (event.getX() > getWidth() - 50) {
             onKeyDown(KeyEvent.KEYCODE_DPAD_RIGHT, null);
-        } else if (isWon() == true && (event.getX() >= 155 && event.getX() <= 175 && event.getY() >= 255 && event.getY() <= 275)) {
-
+        } /*else if (isWon() == true && (event.getX() >= 155 && event.getX() <= 175 && event.getY() >= 255 && event.getY() <= 275)) {
             if (level == 1) {
                 level = 2;
                 initparameters();
@@ -691,9 +1008,10 @@ public class SokobanView extends SurfaceView implements SurfaceHolder.Callback, 
                 level = 1;
                 initparameters();
             }
-        }
+        }*/
 
         return super.onTouchEvent(event);
     }
 
 }
+
