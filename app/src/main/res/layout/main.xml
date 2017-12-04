@@ -1,11 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    >
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	>
+
 	<p8.demo.p8sokoban.SokobanView android:id="@+id/SokobanView"
 		android:layout_width="fill_parent"
-		android:layout_height="fill_parent" />    
+		android:layout_height="fill_parent" />
 
-</FrameLayout>
+	<ProgressBar
+		android:id="@+id/progressBar"
+		style="?android:attr/progressBarStyleHorizontal"
+		android:layout_width="match_parent"
+		android:layout_height="20dp" />
+
+	<TextView
+		android:id="@+id/textView5"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignParentRight="true"
+		android:layout_below="@+id/progressBar"
+		android:textColor="#ffff4d"
+		android:textSize="20px"
+		android:text="@string/name" />
+
+</RelativeLayout>
