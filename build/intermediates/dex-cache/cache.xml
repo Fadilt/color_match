@@ -3,21 +3,21 @@
 
     <item
         is-multidex="true"
-        jar="/home/wanted/Documents/P8_Sokoban/app/build/intermediates/incremental-runtime-classes/debug/instant-run.jar"
+        jar="/Users/nassim/Documents/M1/Android/color_match/color_match/app/build/intermediates/incremental-runtime-classes/debug/instant-run.jar"
         jumboMode="true"
         optimize="true"
         revision="26.0.1"
         sha1="3be78ebc2706b2e1fe2f12d5726887a92d6c183b">
-        <dex dex="/home/wanted/Documents/P8_Sokoban/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run_3c927d8b3867bdf5dd815def845517a8599a6548/classes.dex" />
+        <dex dex="/Users/nassim/Documents/M1/Android/color_match/color_match/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run_c5f28f657f4fb6ff327f1370c5508c8795c12dea/classes.dex" />
     </item>
     <item
         is-multidex="true"
-        jar="/home/wanted/Documents/P8_Sokoban/app/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar"
+        jar="/Users/nassim/Documents/M1/Android/color_match/color_match/app/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar"
         jumboMode="true"
         optimize="true"
         revision="26.0.1"
-        sha1="ba9b7de65b1ba2eab3ce4a18603f51b746bbb531">
-        <dex dex="/home/wanted/Documents/P8_Sokoban/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run-bootstrap_d279b33fe76e811e67fdb9ee80c89e37a3194f24/classes.dex" />
+        sha1="d37cf3ae0e0d67c80343937c43a1de37659e7010">
+        <dex dex="/Users/nassim/Documents/M1/Android/color_match/color_match/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run-bootstrap_1005807c31938bbea23e85d434b9648a75af9af4/classes.dex" />
     </item>
 
 </items>
