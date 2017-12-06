@@ -1,0 +1,26 @@
+{
+    "logs": [
+        {
+            "outputFile": "/Users/nassim/Documents/M1/Android/color_match/color_match/app/build/intermediates/res/merged/debug/values_values.arsc.flat",
+            "map": [
+                {
+                    "source": "/Users/nassim/Documents/M1/Android/color_match/color_match/app/src/main/res/values/strings.xml",
+                    "from": {
+                        "startLines": "3,2",
+                        "startColumns": "4,4",
+                        "startOffsets": "114,55",
+                        "endColumns": "44,58",
+                        "endOffsets": "154,109"
+                    },
+                    "to": {
+                        "startLines": "2,3",
+                        "startColumns": "4,4",
+                        "startOffsets": "55,100",
+                        "endColumns": "44,58",
+                        "endOffsets": "95,154"
+                    }
+                }
+            ]
+        }
+    ]
+}
