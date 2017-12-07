@@ -80,6 +80,10 @@
         "source": "/Users/nassim/Documents/M1/Android/color_match/color_match/app/src/main/res/drawable/green.png"
     },
     {
+        "merged": "/Users/nassim/Documents/M1/Android/color_match/color_match/app/build/intermediates/res/merged/debug/layout_menu.xml.flat",
+        "source": "/Users/nassim/Documents/M1/Android/color_match/color_match/app/src/main/res/layout/menu.xml"
+    },
+    {
         "merged": "/Users/nassim/Documents/M1/Android/color_match/color_match/app/build/intermediates/res/merged/debug/drawable_icon.png.flat",
         "source": "/Users/nassim/Documents/M1/Android/color_match/color_match/app/src/main/res/drawable/icon.png"
     },
