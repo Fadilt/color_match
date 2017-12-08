@@ -19,6 +19,8 @@ public class MenuActivity extends Activity  {
     private ImageView imageView;
     private ImageView imageView3;
     private ImageView imageView4;
+    private ImageView imageView6;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,6 +29,8 @@ public class MenuActivity extends Activity  {
         this.imageView = (ImageView) findViewById(R.id.imageView);
         this.imageView3 = (ImageView) findViewById(R.id.imageView3);
         this.imageView4 = (ImageView) findViewById(R.id.imageView4);
+        this.imageView6 = (ImageView) findViewById(R.id.imageView6);
+
 
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -52,6 +56,16 @@ public class MenuActivity extends Activity  {
 
                 Intent otherActivity = new Intent(getApplicationContext(), MoreActivity.class);
                 startActivity(otherActivity);
+            }
+        });
+
+
+        imageView6.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+               finish();
+                System.exit(0);
             }
         });
 
