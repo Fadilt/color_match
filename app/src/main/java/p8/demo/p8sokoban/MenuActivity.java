@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 /**
  * Created by wanted on 04/12/17.
@@ -13,13 +14,11 @@ import android.widget.ImageView;
 
 
 
-
-
-
 public class MenuActivity extends Activity  {
     int points=0;
     private ImageView imageView;
     private ImageView imageView3;
+    private ImageView imageView4;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,6 +26,7 @@ public class MenuActivity extends Activity  {
 
         this.imageView = (ImageView) findViewById(R.id.imageView);
         this.imageView3 = (ImageView) findViewById(R.id.imageView3);
+        this.imageView4 = (ImageView) findViewById(R.id.imageView4);
 
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -34,13 +34,46 @@ public class MenuActivity extends Activity  {
 
                 Intent otherActivity = new Intent(getApplicationContext(), p8_Sokoban.class);
                 startActivity(otherActivity);
-                finish();
+            }
+        });
 
+        imageView3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent otherActivity = new Intent(getApplicationContext(), ScoreActivity.class);
+                startActivity(otherActivity);
+            }
+        });
+
+        imageView4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent otherActivity = new Intent(getApplicationContext(), MoreActivity.class);
+                startActivity(otherActivity);
             }
         });
 
 
 
+    }
+
+
+
+    public void onPause()
+    {
+        super.onPause();
+    }
+
+    public void onResume()
+    {
+        super.onResume();
+    }
+
+    public void onDestroy()
+    {
+        super.onDestroy();
     }
 
 }

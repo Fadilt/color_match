@@ -5,9 +5,16 @@
 	android:layout_height="fill_parent"
 	>
 
+
+
+
+
+
 	<p8.demo.p8sokoban.SokobanView android:id="@+id/SokobanView"
 		android:layout_width="fill_parent"
-		android:layout_height="fill_parent" />
+		android:layout_height="fill_parent"
+		android:layout_alignParentTop="true"
+		android:layout_alignParentLeft="true" />
 
 	<ProgressBar
 		android:id="@+id/progressBar"
@@ -15,14 +22,19 @@
 		android:layout_width="match_parent"
 		android:layout_height="20dp" />
 
+
+
 	<TextView
 		android:id="@+id/textView5"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
+		android:layout_alignParentBottom="true"
 		android:layout_alignParentRight="true"
-		android:layout_below="@+id/progressBar"
+		android:layout_marginBottom="10dp"
+		android:layout_marginRight="12dp"
 		android:textColor="#ffff4d"
 		android:textSize="20px"
+		android:textStyle="bold"
 		android:text="@string/name" />
 
 </RelativeLayout>

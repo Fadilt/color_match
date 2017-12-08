@@ -20,7 +20,7 @@
         android:src="@drawable/btn_play_pressed"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="201dp" />
+        android:layout_marginTop="150dp" />
 
     <ImageView
         android:id="@+id/imageView3"
@@ -29,6 +29,16 @@
         android:src="@drawable/btn_score_pressed"
         android:layout_below="@+id/imageView"
         android:layout_alignLeft="@+id/imageView"
-        android:layout_marginTop="47dp" />
+        android:layout_marginTop="30dp" />
+
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/btn_over_more_pressed"
+        android:layout_marginBottom="100dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignLeft="@+id/imageView3" />
+
 
 </RelativeLayout>
