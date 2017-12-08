@@ -2,6 +2,7 @@ package p8.demo.p8sokoban;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -18,7 +19,6 @@ public class p8_Sokoban extends Activity
     private int progressStatus = 0;
     private SokobanView mSokobanView;
     private Handler handler = new Handler();
-    TextView textView5;
 
     /** Called when the activity is first created. */
     @Override
@@ -29,10 +29,6 @@ public class p8_Sokoban extends Activity
 
         // charge le fichier main.xml comme vue de l'activité
         setContentView(R.layout.main);
-
-        //Création de la sauvegarde
-
-
 
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
         progressBar.setMax(60000);
@@ -54,11 +50,9 @@ public class p8_Sokoban extends Activity
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-
-                    //
-
                 }
 
+                sauvegarder_meilleur_score();
                 Intent otherActivity = new Intent(getApplicationContext(), MenuActivity.class);
                 startActivity(otherActivity);
                 finish();
@@ -73,6 +67,31 @@ public class p8_Sokoban extends Activity
         mSokobanView.setVisibility(View.VISIBLE);
 
 
+    }
 
+    void sauvegarder_meilleur_score()
+    {
+        SharedPreferences param = getSharedPreferences("saveFile", 0);
+        int score = param.getInt("meilleur_score", 0);
+
+        if(mSokobanView.points > score) {
+            SharedPreferences.Editor editeur = getSharedPreferences("saveFile", 0).edit();//ouverture d'un edit
+            editeur.putInt("meilleur_score", mSokobanView.points).commit();//sauvegarde à l'intérieur d'un edit
+        }
+    }
+
+    public void onPause()
+    {
+        super.onPause();
+    }
+
+    public void onResume()
+    {
+        super.onResume();
+    }
+
+    public void onDestroy()
+    {
+        super.onDestroy();
     }
 }
