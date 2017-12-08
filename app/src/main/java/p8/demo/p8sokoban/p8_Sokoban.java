@@ -58,7 +58,7 @@ public class p8_Sokoban extends Activity
                     }
 
 
-                    if(unblocked==0||progressStatus==60000 ){
+                    if(progressStatus==60000 ){
                         Intent otherActivity = new Intent(getApplicationContext(), MenuActivity.class);
                         startActivity(otherActivity);
                         unblocked=2;

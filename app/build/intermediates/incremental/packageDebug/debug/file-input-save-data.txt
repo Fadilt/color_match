@@ -1,5 +1,5 @@
 #Internal package file, do not edit.
-#Fri Dec 08 18:45:33 CET 2017
+#Fri Dec 08 19:51:27 CET 2017
 0.baseType=DIRECTORY
 0.base=/Users/nassim/Documents/M1/Android/color_match/color_match/app/build/intermediates/transforms/dexMerger/debug/0
 0.path=classes.dex

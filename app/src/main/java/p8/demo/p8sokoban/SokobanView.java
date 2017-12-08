@@ -5,7 +5,10 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.LinearGradient;
 import android.graphics.Paint;
+import android.graphics.Shader;
 import android.os.CountDownTimer;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -20,9 +23,7 @@ import java.util.Random;
 import static p8.demo.p8sokoban.R.id.textView5;
 
 public class SokobanView extends SurfaceView implements SurfaceHolder.Callback, Runnable {
-
-
-    //Random r = new Random();
+    Random r = new Random();
     // Declaration des images
     private Bitmap block;
     private Bitmap diamant;
@@ -63,10 +64,9 @@ public class SokobanView extends SurfaceView implements SurfaceHolder.Callback, 
 
     // taille de la carte
     static final int carteWidth = 10;
-    static final int carteHeight = 10;
-    static final int carteTileSize = 20;
+    static final int carteHeight = 14;
+    static int carteTileSize;
     static int unblocked=2;
-
 
     // constante modelisant les differentes types de cases
 
@@ -83,7 +83,6 @@ public class SokobanView extends SurfaceView implements SurfaceHolder.Callback, 
     static final int CST_blanc = 8;
     static final int CST_gris = 9;
     static final int CST_vid = 10;
-
 
 
 
@@ -126,6 +125,15 @@ public class SokobanView extends SurfaceView implements SurfaceHolder.Callback, 
             {CST_gris, CST_blanc, CST_gris, CST_blanc, CST_gris, CST_blanc, CST_gris, CST_blanc, CST_gris, CST_blanc},
             {CST_blanc, CST_gris, CST_blanc, CST_gris, CST_blanc, CST_gris, CST_blanc, CST_gris, CST_blanc, CST_gris},
             {CST_gris, CST_blanc, CST_gris, CST_blanc, CST_gris, CST_blanc, CST_gris, CST_blanc, CST_gris, CST_blanc},
+            {CST_blanc, CST_gris, CST_blanc, CST_gris, CST_blanc, CST_gris, CST_blanc, CST_gris, CST_blanc, CST_gris},
+            {CST_gris, CST_blanc, CST_gris, CST_blanc, CST_gris, CST_blanc, CST_gris, CST_blanc, CST_gris, CST_blanc},
+            {CST_blanc, CST_gris, CST_blanc, CST_gris, CST_blanc, CST_gris, CST_blanc, CST_gris, CST_blanc, CST_gris},
+            {CST_gris, CST_blanc, CST_gris, CST_blanc, CST_gris, CST_blanc, CST_gris, CST_blanc, CST_gris, CST_blanc},
+
+
+
+
+
 
     };
 
@@ -154,6 +162,7 @@ public class SokobanView extends SurfaceView implements SurfaceHolder.Callback, 
     public SokobanView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
+        carteTileSize = context.getResources().getDisplayMetrics().widthPixels / 10;
 
         // permet d'ecouter les surfaceChanged, surfaceCreated, surfaceDestroyed
         holder = getHolder();
@@ -194,7 +203,6 @@ public class SokobanView extends SurfaceView implements SurfaceHolder.Callback, 
 
 
     }
-
     // chargement du niveau a partir du tableau de reference du niveau
     private void loadlevel() {
 
@@ -238,9 +246,9 @@ public class SokobanView extends SurfaceView implements SurfaceHolder.Callback, 
     private void paintarrow(Canvas canvas) {
         canvas.drawBitmap(up, (getWidth() - up.getWidth()) / 2, 0, null);
 
-        canvas.drawBitmap(down, (getWidth() - down.getWidth()) / 2, getHeight() - down.getHeight(), null);
-        canvas.drawBitmap(left, 0, (getHeight() - up.getHeight()) / 2, null);
-        canvas.drawBitmap(right, getWidth() - right.getWidth(), (getHeight() - up.getHeight()) / 2, null);
+        //canvas.drawBitmap(down, (getWidth() - down.getWidth()) / 2, getHeight() - down.getHeight(), null);
+        //canvas.drawBitmap(left, 0, (getHeight() - up.getHeight()) / 2, null);
+        //canvas.drawBitmap(right, getWidth() - right.getWidth(), (getHeight() - up.getHeight()) / 2, null);
     }
 
     // dessin du gagne si gagne
@@ -257,9 +265,11 @@ public class SokobanView extends SurfaceView implements SurfaceHolder.Callback, 
 
 
                 if (ref[i][j] == CST_blanc) {
+                    vide = Bitmap.createScaledBitmap(vide, carteTileSize , carteTileSize, true);
                     canvas.drawBitmap(vide, carteLeftAnchor + j * carteTileSize, carteTopAnchor + i * carteTileSize, null);
                 }
                 if (ref[i][j] == CST_gris) {
+                    vide1 = Bitmap.createScaledBitmap(vide1, carteTileSize , carteTileSize, true);
                     canvas.drawBitmap(vide1, carteLeftAnchor + j * carteTileSize, carteTopAnchor + i * carteTileSize, null);
                 }
             }
@@ -269,12 +279,9 @@ public class SokobanView extends SurfaceView implements SurfaceHolder.Callback, 
     public void initColor()
     {
 
-        //Initialisation de 10 cases vides
-        Random r = new Random();
-
-        for(int i = 0 ; i<257 ; i++)
+        //Initialisation de 15 cases vides
+        for(int i = 0 ; i<15 ; i++)
         {
-
             int k = r.nextInt(carteHeight);
             int l = r.nextInt(carteWidth);
             carte[k][l] = 10;
@@ -293,9 +300,8 @@ public class SokobanView extends SurfaceView implements SurfaceHolder.Callback, 
             }
         }
     }
-
-    // dessin des couleurs
     private void paintcolor(Canvas canvas) {
+
         if (level == 1) {
 
             for (int i = 0; i < carteHeight ; i++)
@@ -304,59 +310,64 @@ public class SokobanView extends SurfaceView implements SurfaceHolder.Callback, 
 
                     switch (carte[i][j]) {
 
-
                         case CST_diamant:
+                            diamant = Bitmap.createScaledBitmap(diamant, carteTileSize , carteTileSize, true);
                             canvas.drawBitmap(diamant, carteLeftAnchor + j * carteTileSize, carteTopAnchor + i * carteTileSize, null);
                             break;
 
                         case CST_marron:
+                            marron = Bitmap.createScaledBitmap(marron, carteTileSize , carteTileSize, true);
                             canvas.drawBitmap(marron, carteLeftAnchor + j * carteTileSize, carteTopAnchor + i * carteTileSize, null);
                             break;
 
                         case CST_bleuciel:
+                            bleuciel = Bitmap.createScaledBitmap(bleuciel, carteTileSize , carteTileSize, true);
                             canvas.drawBitmap(bleuciel, carteLeftAnchor + j * carteTileSize, carteTopAnchor + i * carteTileSize, null);
                             break;
 
                         case CST_cyan:
+                            cyan = Bitmap.createScaledBitmap(cyan, carteTileSize , carteTileSize, true);
                             canvas.drawBitmap(cyan, carteLeftAnchor + j * carteTileSize, carteTopAnchor + i * carteTileSize, null);
                             break;
 
                         case CST_vert:
+                            vert = Bitmap.createScaledBitmap(vert, carteTileSize , carteTileSize, true);
                             canvas.drawBitmap(vert, carteLeftAnchor + j * carteTileSize, carteTopAnchor + i * carteTileSize, null);
                             break;
 
                         case CST_jaune:
+                            jaune = Bitmap.createScaledBitmap(jaune, carteTileSize , carteTileSize, true);
                             canvas.drawBitmap(jaune, carteLeftAnchor + j * carteTileSize, carteTopAnchor + i * carteTileSize, null);
                             break;
 
                         case CST_rose:
+                            rose = Bitmap.createScaledBitmap(rose, carteTileSize , carteTileSize, true);
                             canvas.drawBitmap(rose, carteLeftAnchor + j * carteTileSize, carteTopAnchor + i * carteTileSize, null);
                             break;
 
                         case CST_violet:
+                            violet = Bitmap.createScaledBitmap(violet, carteTileSize , carteTileSize, true);
                             canvas.drawBitmap(violet, carteLeftAnchor + j * carteTileSize, carteTopAnchor + i * carteTileSize, null);
                             break;
                     }
                 }
-
             }
         }
     }
 
 
-
     // dessin du jeu (fond uni, en fonction du jeu gagne ou pas dessin du plateau et du joueur des diamants et des fleches)
     private void nDraw(Canvas canvas) {
-        canvas.drawRGB(44,44,44);
+        canvas.drawRGB(200,200,200);
 
             paintcarte(canvas);
             paintcolor(canvas);
-            blocked_game();
-
-        //paintPlayer(canvas);
-            //paintdiamants(canvas);
-            //paintarrow(canvas);
         }
+
+
+
+
+
 
 
 
@@ -366,7 +377,6 @@ public class SokobanView extends SurfaceView implements SurfaceHolder.Callback, 
         Log.i("-> FCT <-", "surfaceChanged "+ width +" - "+ height);//informations sur la taille de la surface
 
         initparameters();
-
     }
 
     public void surfaceCreated(SurfaceHolder arg0) {
@@ -389,7 +399,6 @@ public class SokobanView extends SurfaceView implements SurfaceHolder.Callback, 
 
                 cv_thread.sleep(40);
                 currentStepZone = (currentStepZone + 1) % maxStepZone;
-
                 try {
                     c = holder.lockCanvas(null);//obtient un canvas pour pouvoir dessiner dans cette surface
                     nDraw(c);
@@ -404,7 +413,6 @@ public class SokobanView extends SurfaceView implements SurfaceHolder.Callback, 
             }
         }
     }
-
 
 
 
@@ -628,40 +636,13 @@ public class SokobanView extends SurfaceView implements SurfaceHolder.Callback, 
         Log.i("-> FCT <-", "jj " + event.getX());
         Log.i("-> FCT <-", "jj " + event.getY());
 
-        int x=((int)event.getX()-carteLeftAnchor)/20;
-        int y=((int)event.getY()-carteTopAnchor)/20;
+        int x=((int)event.getX()-carteLeftAnchor)/carteTileSize;
+        int y=((int)event.getY()-carteTopAnchor)/carteTileSize;
 
         Log.i("", "matrice x= " + x);
         Log.i("", "matrice y= " + y);
 
         Log.i("", "matrice x= " + carteTopAnchor);
-
-
-
-
-        /*if (x==9 && y==9){
-            carte[y][x]= 10;
-            points++;
-            ((p8_Sokoban)getContext()).textView5.setText("Points :" + String.valueOf(points));
-
-        }
-
-        if (x==1 && y==0){
-            carte[y][x]= 10;
-            points++;
-            ((p8_Sokoban)getContext()).textView5.setText("Points :" + String.valueOf(points));
-        }
-
-        if (x==0 && y==1){
-            carte[y][x]= 10;
-            points++;
-            ((p8_Sokoban)getContext()).textView5.setText("Points :" + String.valueOf(points));
-
-        }*/
-
-        //position_color(x,y);
-
-
 
 
 
