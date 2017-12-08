@@ -286,7 +286,7 @@ public class SokobanView extends SurfaceView implements SurfaceHolder.Callback, 
 
 
 
-        //Initialisation de 15 cases vides
+        //Initialisation de 20 cases vides
         for(int i = 0 ; i<20 ; i++)
         {
             int k = r.nextInt(carteHeight);
