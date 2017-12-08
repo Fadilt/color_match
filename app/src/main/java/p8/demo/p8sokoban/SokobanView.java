@@ -67,6 +67,8 @@ public class SokobanView extends SurfaceView implements SurfaceHolder.Callback, 
     static final int carteHeight = 14;
     static int carteTileSize;
     static int unblocked=2;
+    static int speed_time=1;
+
 
     // constante modelisant les differentes types de cases
 
@@ -285,7 +287,7 @@ public class SokobanView extends SurfaceView implements SurfaceHolder.Callback, 
 
 
         //Initialisation de 15 cases vides
-        for(int i = 0 ; i<15 ; i++)
+        for(int i = 0 ; i<20 ; i++)
         {
             int k = r.nextInt(carteHeight);
             int l = r.nextInt(carteWidth);
@@ -371,7 +373,9 @@ public class SokobanView extends SurfaceView implements SurfaceHolder.Callback, 
 
             paintcarte(canvas);
             paintcolor(canvas);
-            //paintPlayer(canvas);
+
+
+        //paintPlayer(canvas);
             //paintdiamants(canvas);
             //paintarrow(canvas);
         }
@@ -545,10 +549,13 @@ public class SokobanView extends SurfaceView implements SurfaceHolder.Callback, 
     public void clearColor(int count[],Color[] c){
 
         int cleared_color = 0;
+        speed_time=1;
 
         for (int k=0;k<8;k++) {
 
             if (count[k]>1){
+
+                speed_time=0;
                 for (int l=0;l<4;l++){
 
                     if (c[l].color_one==k){
@@ -562,6 +569,11 @@ public class SokobanView extends SurfaceView implements SurfaceHolder.Callback, 
                 }
             }
         }
+
+        if (speed_time!=0)
+                speed_time=2;
+
+System.out.println(speed_time);
 
         if( cleared_color== 2)
             points += 40;
@@ -614,7 +626,7 @@ public class SokobanView extends SurfaceView implements SurfaceHolder.Callback, 
 
                     if(unblocked==1) {
 
-                        //Log.i("", "UNBLOCKED= " + unblocked);
+                        Log.i("", "UNBLOCKED= " + unblocked);
 
                         return unblocked;
 
@@ -623,7 +635,7 @@ public class SokobanView extends SurfaceView implements SurfaceHolder.Callback, 
             }
         }
         if (unblocked!=1) {
-            unblocked = 0;
+            unblocked = 2;
         }
 
 
@@ -639,15 +651,13 @@ public class SokobanView extends SurfaceView implements SurfaceHolder.Callback, 
         if(unblocked!=1){
 
             unblocked=0;
-            //Log.i("", "UNBLOCKED= " + unblocked);
+            Log.i("", "UNBLOCKED= " + unblocked);
 
 
         }
 
     }
     public boolean onTouchEvent (MotionEvent event) {
-        Log.i("-> FCT <-", "jj " + event.getX());
-        Log.i("-> FCT <-", "jj " + event.getY());
 
 
 
@@ -655,10 +665,7 @@ public class SokobanView extends SurfaceView implements SurfaceHolder.Callback, 
         int y=((int)event.getY()-carteTopAnchor)/carteTileSize;
 
 
-        Log.i("", "matrice x= " + x);
-        Log.i("", "matrice y= " + y);
 
-        Log.i("", "matrice x= " + carteTopAnchor);
 
         /*if (x==9 && y==9){
             carte[y][x]= 10;
@@ -690,6 +697,7 @@ public class SokobanView extends SurfaceView implements SurfaceHolder.Callback, 
             clearColor(count_color,position_color(y, x));
         }
         display_points();
+        blocked_game();
 
 
 
@@ -718,5 +726,8 @@ public class SokobanView extends SurfaceView implements SurfaceHolder.Callback, 
 
         return super.onTouchEvent(event);
     }
+
+
+
 
 }
