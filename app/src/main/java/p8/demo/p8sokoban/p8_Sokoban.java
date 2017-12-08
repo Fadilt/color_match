@@ -11,6 +11,9 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import static p8.demo.p8sokoban.SokobanView.speed_time;
+import static p8.demo.p8sokoban.SokobanView.unblocked;
+
 
 // declaration de notre activity héritée de Activity
 public class p8_Sokoban extends Activity
@@ -37,7 +40,17 @@ public class p8_Sokoban extends Activity
             public void run() {
                 while (progressStatus < 60000) {
 
-                    progressStatus += 100;
+
+                    int acceleration;
+                    if (speed_time==2){
+                         acceleration=500;
+                         speed_time=1;
+                    }
+
+                    else
+                        acceleration=0;
+
+                    progressStatus += 200+acceleration;
                     handler.post(new Runnable() {
                         public void run() {progressBar.setProgress(progressStatus);
 
@@ -50,12 +63,22 @@ public class p8_Sokoban extends Activity
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
+                    if(unblocked==0) {
+
+                        Intent otherActivity = new Intent(getApplicationContext(), MenuActivity.class);
+                        startActivity(otherActivity);
+                        finish();
+                        unblocked=2;
+                    }
                 }
 
+
+
                 sauvegarder_meilleur_score();
-                Intent otherActivity = new Intent(getApplicationContext(), MenuActivity.class);
-                startActivity(otherActivity);
-                finish();
+
+                    Intent otherActivity = new Intent(getApplicationContext(), MenuActivity.class);
+                    startActivity(otherActivity);
+                    finish();
 
 
             }
