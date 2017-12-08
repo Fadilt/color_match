@@ -5,7 +5,10 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.LinearGradient;
 import android.graphics.Paint;
+import android.graphics.Shader;
 import android.os.CountDownTimer;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -20,7 +23,7 @@ import java.util.Random;
 import static p8.demo.p8sokoban.R.id.textView5;
 
 public class SokobanView extends SurfaceView implements SurfaceHolder.Callback, Runnable {
-    //Random r = new Random();
+    Random r = new Random();
     // Declaration des images
     private Bitmap block;
     private Bitmap diamant;
@@ -61,8 +64,9 @@ public class SokobanView extends SurfaceView implements SurfaceHolder.Callback, 
 
     // taille de la carte
     static final int carteWidth = 10;
-    static final int carteHeight = 11;
-    static final int carteTileSize = 20;
+    static final int carteHeight = 14;
+    static int carteTileSize;
+    static int unblocked=2;
 
     // constante modelisant les differentes types de cases
 
@@ -122,7 +126,16 @@ public class SokobanView extends SurfaceView implements SurfaceHolder.Callback, 
             {CST_gris, CST_blanc, CST_gris, CST_blanc, CST_gris, CST_blanc, CST_gris, CST_blanc, CST_gris, CST_blanc},
             {CST_blanc, CST_gris, CST_blanc, CST_gris, CST_blanc, CST_gris, CST_blanc, CST_gris, CST_blanc, CST_gris},
             {CST_gris, CST_blanc, CST_gris, CST_blanc, CST_gris, CST_blanc, CST_gris, CST_blanc, CST_gris, CST_blanc},
+            {CST_blanc, CST_gris, CST_blanc, CST_gris, CST_blanc, CST_gris, CST_blanc, CST_gris, CST_blanc, CST_gris},
             {CST_gris, CST_blanc, CST_gris, CST_blanc, CST_gris, CST_blanc, CST_gris, CST_blanc, CST_gris, CST_blanc},
+            {CST_blanc, CST_gris, CST_blanc, CST_gris, CST_blanc, CST_gris, CST_blanc, CST_gris, CST_blanc, CST_gris},
+            {CST_gris, CST_blanc, CST_gris, CST_blanc, CST_gris, CST_blanc, CST_gris, CST_blanc, CST_gris, CST_blanc},
+
+
+
+
+
+
 
     };
 
@@ -151,6 +164,7 @@ public class SokobanView extends SurfaceView implements SurfaceHolder.Callback, 
     public SokobanView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
+        carteTileSize = context.getResources().getDisplayMetrics().widthPixels / 10;
 
         // permet d'ecouter les surfaceChanged, surfaceCreated, surfaceDestroyed
         holder = getHolder();
@@ -191,7 +205,6 @@ public class SokobanView extends SurfaceView implements SurfaceHolder.Callback, 
 
 
     }
-
     // chargement du niveau a partir du tableau de reference du niveau
     private void loadlevel() {
 
@@ -235,9 +248,10 @@ public class SokobanView extends SurfaceView implements SurfaceHolder.Callback, 
     private void paintarrow(Canvas canvas) {
         canvas.drawBitmap(up, (getWidth() - up.getWidth()) / 2, 0, null);
 
-        canvas.drawBitmap(down, (getWidth() - down.getWidth()) / 2, getHeight() - down.getHeight(), null);
-        canvas.drawBitmap(left, 0, (getHeight() - up.getHeight()) / 2, null);
-        canvas.drawBitmap(right, getWidth() - right.getWidth(), (getHeight() - up.getHeight()) / 2, null);
+
+        //canvas.drawBitmap(down, (getWidth() - down.getWidth()) / 2, getHeight() - down.getHeight(), null);
+        //canvas.drawBitmap(left, 0, (getHeight() - up.getHeight()) / 2, null);
+        //canvas.drawBitmap(right, getWidth() - right.getWidth(), (getHeight() - up.getHeight()) / 2, null);
     }
 
     // dessin du gagne si gagne
@@ -254,9 +268,11 @@ public class SokobanView extends SurfaceView implements SurfaceHolder.Callback, 
 
 
                 if (ref[i][j] == CST_blanc) {
+                    vide = Bitmap.createScaledBitmap(vide, carteTileSize , carteTileSize, true);
                     canvas.drawBitmap(vide, carteLeftAnchor + j * carteTileSize, carteTopAnchor + i * carteTileSize, null);
                 }
                 if (ref[i][j] == CST_gris) {
+                    vide1 = Bitmap.createScaledBitmap(vide1, carteTileSize , carteTileSize, true);
                     canvas.drawBitmap(vide1, carteLeftAnchor + j * carteTileSize, carteTopAnchor + i * carteTileSize, null);
                 }
             }
@@ -266,12 +282,11 @@ public class SokobanView extends SurfaceView implements SurfaceHolder.Callback, 
     public void initColor()
     {
 
-        //Initialisation de 10 cases vides
-        Random r = new Random();
 
-        for(int i = 0 ; i<10 ; i++)
+
+        //Initialisation de 15 cases vides
+        for(int i = 0 ; i<15 ; i++)
         {
-
             int k = r.nextInt(carteHeight);
             int l = r.nextInt(carteWidth);
             carte[k][l] = 10;
@@ -293,6 +308,7 @@ public class SokobanView extends SurfaceView implements SurfaceHolder.Callback, 
 
     // dessin des couleurs
     private void paintcolor(Canvas canvas) {
+
         if (level == 1) {
 
             for (int i = 0; i < carteHeight ; i++)
@@ -301,57 +317,50 @@ public class SokobanView extends SurfaceView implements SurfaceHolder.Callback, 
 
                     switch (carte[i][j]) {
 
-
                         case CST_diamant:
+                            diamant = Bitmap.createScaledBitmap(diamant, carteTileSize , carteTileSize, true);
                             canvas.drawBitmap(diamant, carteLeftAnchor + j * carteTileSize, carteTopAnchor + i * carteTileSize, null);
                             break;
 
                         case CST_marron:
+                            marron = Bitmap.createScaledBitmap(marron, carteTileSize , carteTileSize, true);
                             canvas.drawBitmap(marron, carteLeftAnchor + j * carteTileSize, carteTopAnchor + i * carteTileSize, null);
                             break;
 
                         case CST_bleuciel:
+                            bleuciel = Bitmap.createScaledBitmap(bleuciel, carteTileSize , carteTileSize, true);
                             canvas.drawBitmap(bleuciel, carteLeftAnchor + j * carteTileSize, carteTopAnchor + i * carteTileSize, null);
                             break;
 
                         case CST_cyan:
+                            cyan = Bitmap.createScaledBitmap(cyan, carteTileSize , carteTileSize, true);
                             canvas.drawBitmap(cyan, carteLeftAnchor + j * carteTileSize, carteTopAnchor + i * carteTileSize, null);
                             break;
 
                         case CST_vert:
+                            vert = Bitmap.createScaledBitmap(vert, carteTileSize , carteTileSize, true);
                             canvas.drawBitmap(vert, carteLeftAnchor + j * carteTileSize, carteTopAnchor + i * carteTileSize, null);
                             break;
 
                         case CST_jaune:
+                            jaune = Bitmap.createScaledBitmap(jaune, carteTileSize , carteTileSize, true);
                             canvas.drawBitmap(jaune, carteLeftAnchor + j * carteTileSize, carteTopAnchor + i * carteTileSize, null);
                             break;
 
                         case CST_rose:
+                            rose = Bitmap.createScaledBitmap(rose, carteTileSize , carteTileSize, true);
                             canvas.drawBitmap(rose, carteLeftAnchor + j * carteTileSize, carteTopAnchor + i * carteTileSize, null);
                             break;
 
                         case CST_violet:
+                            violet = Bitmap.createScaledBitmap(violet, carteTileSize , carteTileSize, true);
                             canvas.drawBitmap(violet, carteLeftAnchor + j * carteTileSize, carteTopAnchor + i * carteTileSize, null);
                             break;
                     }
                 }
-
             }
         }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -414,90 +423,12 @@ public class SokobanView extends SurfaceView implements SurfaceHolder.Callback, 
 
 
 
-    /*public void run2()
-    {
-        Canvas c = null;
-
-        while(in) {
-            c=holder.lockCanvas();
-            c.drawBitmap(up, (getWidth() - up.getWidth()) / 2, 0, null);
-
-            new CountDownTimer(30000, 2000) {
-                public void onTick(long millisUntilFinished) {
-                    //System.out.println(" " + barProgressionX);
-                    //barProgressionX -= 10;
-                    //invalidate();
-
-
-
-                }
-
-                public void onFinish() {
-                    //barProgressionX = 0;
-                    //textView.setText("FINISH!!");
-                }
-            }.start();
-        }
-    }*/
 
 
 
 
 
-
-
-
-
-
-    public void clearColor(Color c[]) {
-
-
-        int count[] = {0, 0, 0, 0,0,0,0,0};
-
-        for (int i = 0; i < 4; i++) {
-
-            for (int j = 0; j < 8; j++) {
-
-                if (c[i].color_one == j) {
-
-                    count[j]=count[j]+1;
-
-                }
-
-            }
-        }
-
-        for (int k=0;k<8;k++) {
-
-
-            if (count[k]>1){
-
-
-                for (int l=0;l<4;l++){
-
-
-                    if (c[l].color_one==k){
-
-                        int y=c[l].row;
-                        int x=c[l].column;
-
-                        carte[y][x]=10;
-                    }
-
-                }
-
-
-            }
-
-
-
-        }
-
-    }
-
-
-
-    public void position_color(int j, int i) {
+    public Color [] position_color(int j, int i) {
 
 
         int y = j;
@@ -521,12 +452,10 @@ public class SokobanView extends SurfaceView implements SurfaceHolder.Callback, 
             while (x < carteWidth) {
 
 
-                if (carte[y][x]==0||carte[y][x]==1||carte[y][x]==2||carte[y][x]==3||carte[y][x]==4||carte[y][x]==5 ||carte[y][x]==6||carte[y][x]==7) {
+                if (carte[y][x] == 0 || carte[y][x] == 1 || carte[y][x] == 2 || carte[y][x] == 3 || carte[y][x] == 4 || carte[y][x] == 5 || carte[y][x] == 6 || carte[y][x] == 7) {
 
 
                     color_tab[a] = new Color(carte[y][x], y, x);
-
-
 
                     a++;
                     break;
@@ -539,7 +468,7 @@ public class SokobanView extends SurfaceView implements SurfaceHolder.Callback, 
             while (y < carteHeight) {
 
 
-                if (carte[y][x] == 0 || carte[y][x] == 1 || carte[y][x] == 2 || carte[y][x] == 3 || carte[y][x] == 4 || carte[y][x] == 5||carte[y][x]==6||carte[y][x]==7) {
+                if (carte[y][x] == 0 || carte[y][x] == 1 || carte[y][x] == 2 || carte[y][x] == 3 || carte[y][x] == 4 || carte[y][x] == 5 || carte[y][x] == 6 || carte[y][x] == 7) {
 
 
                     color_tab[a] = new Color(carte[y][x], y, x);
@@ -555,7 +484,7 @@ public class SokobanView extends SurfaceView implements SurfaceHolder.Callback, 
 
             while (x >= 0) {
 
-                if (carte[y][x] == 0 || carte[y][x] == 1 || carte[y][x] == 2 || carte[y][x] == 3 || carte[y][x] == 4 || carte[y][x] == 5||carte[y][x]==6||carte[y][x]==7) {
+                if (carte[y][x] == 0 || carte[y][x] == 1 || carte[y][x] == 2 || carte[y][x] == 3 || carte[y][x] == 4 || carte[y][x] == 5 || carte[y][x] == 6 || carte[y][x] == 7) {
 
 
                     color_tab[a] = new Color(carte[y][x], y, x);
@@ -572,7 +501,7 @@ public class SokobanView extends SurfaceView implements SurfaceHolder.Callback, 
             while (y >= 0) {
 
 
-                if (carte[y][x] == 0 || carte[y][x] == 1 || carte[y][x] == 2 || carte[y][x] == 3 || carte[y][x] == 4 || carte[y][x] == 5||carte[y][x]==6||carte[y][x]==7) {
+                if (carte[y][x] == 0 || carte[y][x] == 1 || carte[y][x] == 2 || carte[y][x] == 3 || carte[y][x] == 4 || carte[y][x] == 5 || carte[y][x] == 6 || carte[y][x] == 7) {
 
 
                     color_tab[a] = new Color(carte[y][x], y, x);
@@ -584,9 +513,62 @@ public class SokobanView extends SurfaceView implements SurfaceHolder.Callback, 
             }
 
 
-            clearColor(color_tab);
-
         }
+        return color_tab;
+    }
+
+
+
+
+
+    public int[] countSameColor(Color c[]) {
+
+
+        int count[] = {0, 0, 0, 0, 0, 0, 0, 0};
+
+        for (int i = 0; i < 4; i++) {
+
+
+            for (int j = 0; j < 8; j++) {
+
+                if (c[i].color_one == j) {
+
+                    count[j] = count[j] + 1;
+
+                }
+            }
+        }
+        return count;
+    }
+
+
+    public void clearColor(int count[],Color[] c){
+
+        int cleared_color = 0;
+
+        for (int k=0;k<8;k++) {
+
+            if (count[k]>1){
+                for (int l=0;l<4;l++){
+
+                    if (c[l].color_one==k){
+
+                        int y=c[l].row;
+                        int x=c[l].column;
+
+                        carte[y][x]=10;
+                        cleared_color++;
+                    }
+                }
+            }
+        }
+
+        if( cleared_color== 2)
+            points += 40;
+        else if(cleared_color == 3)
+            points += 60;
+        else if(cleared_color == 4)
+            points += 120;
 
 
     }
@@ -594,21 +576,89 @@ public class SokobanView extends SurfaceView implements SurfaceHolder.Callback, 
 
 
 
-    // fonction permettant de recuperer les evenements tactiles
+    public void display_points()
+    {
+        TextView textPoints = (TextView)this.getRootView().findViewById(R.id.textView5);
+        textPoints.setText("Points : " + String.valueOf(points));
+    }
+
+
+
+    public int setunblocked( int []count) {
+
+
+        for (int k = 0; k < 8; k++) {
+
+            if (count[k] > 1) {
+                unblocked = 1;
+
+                return unblocked;
+            }
+        }
+
+        //Log.i("", "UNBLOCKED= " + unblocked);
+        unblocked=0;
+
+        return unblocked;
+    }
+
+    public int unblockedValue(){// permet d'arrêter le jeu si il n y'a plus de combinaisons possibles ou s'il n y'a que des cases vides
+
+
+        for (int j=0;j<carteHeight;j++){
+            for (int i=0;i<carteWidth;i++){
+                if (carte[j][i]==10){
+
+                    countSameColor(position_color(j,i));
+                    unblocked=setunblocked(countSameColor(position_color(j,i)));
+
+                    if(unblocked==1) {
+
+                        //Log.i("", "UNBLOCKED= " + unblocked);
+
+                        return unblocked;
+
+                    }
+                }
+            }
+        }
+        if (unblocked!=1) {
+            unblocked = 0;
+        }
+
+
+
+        return unblocked;
+
+    }
+
+    public void blocked_game(){
+
+        unblocked=unblockedValue();
+
+        if(unblocked!=1){
+
+            unblocked=0;
+            //Log.i("", "UNBLOCKED= " + unblocked);
+
+
+        }
+
+    }
     public boolean onTouchEvent (MotionEvent event) {
         Log.i("-> FCT <-", "jj " + event.getX());
         Log.i("-> FCT <-", "jj " + event.getY());
 
-        int x=((int)event.getX()-carteLeftAnchor)/20;
-        int y=((int)event.getY()-carteTopAnchor)/20;
+
+
+        int x=((int)event.getX()-carteLeftAnchor)/carteTileSize;
+        int y=((int)event.getY()-carteTopAnchor)/carteTileSize;
+
 
         Log.i("", "matrice x= " + x);
         Log.i("", "matrice y= " + y);
 
         Log.i("", "matrice x= " + carteTopAnchor);
-
-
-
 
         /*if (x==9 && y==9){
             carte[y][x]= 10;
@@ -623,6 +673,7 @@ public class SokobanView extends SurfaceView implements SurfaceHolder.Callback, 
             ((p8_Sokoban)getContext()).textView5.setText("Points :" + String.valueOf(points));
         }
 
+<<<<<<< HEAD
         if (x==0 && y==1){
             carte[y][x]= 10;
             points++;
@@ -634,6 +685,13 @@ public class SokobanView extends SurfaceView implements SurfaceHolder.Callback, 
 
         if ((y>=0&&y<carteHeight)&&(x>=0&&x<carteWidth))
             position_color(y,x);
+        if ((y>=0&&y<carteHeight)&&(x>=0&&x<carteWidth)) {
+            int []count_color=countSameColor(position_color(y, x));
+            clearColor(count_color,position_color(y, x));
+        }
+        display_points();
+
+
 
         /*if (event.getY() < 50) {
             onKeyDown(KeyEvent.KEYCODE_DPAD_UP, null);
