@@ -1,4 +1,0 @@
-#Wed Dec 06 23:44:52 CET 2017
-base.0=/Users/nassim/Documents/M1/Android/color_match/color_match/app/build/intermediates/transforms/dexMerger/debug/23
-path.0=classes.dex
-renamed.0=classes.dex

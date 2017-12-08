@@ -6,18 +6,25 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.os.CountDownTimer;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.widget.TextView;
 
 import java.util.Random;
 
+import static p8.demo.p8sokoban.R.id.textView5;
+
 public class SokobanView extends SurfaceView implements SurfaceHolder.Callback, Runnable {
 
+
+    //Random r = new Random();
     // Declaration des images
+    private Bitmap block;
     private Bitmap diamant;
     private Bitmap bleuciel;
     private Bitmap vert;
@@ -26,14 +33,20 @@ public class SokobanView extends SurfaceView implements SurfaceHolder.Callback, 
     private Bitmap cyan;
     private Bitmap violet;
     private Bitmap rose;
-
+    private Bitmap perso;
     private Bitmap vide;
     private Bitmap vide1;
+    private Bitmap[] zone = new Bitmap[4];
     private Bitmap up;
     private Bitmap down;
     private Bitmap left;
     private Bitmap right;
     private Bitmap win;
+
+    //private TextView textView5;
+    int points = 0;
+
+
 
     // Declaration des objets Ressources et Context permettant d'accéder aux ressources de notre application et de les charger
     private Resources mRes;
@@ -50,10 +63,13 @@ public class SokobanView extends SurfaceView implements SurfaceHolder.Callback, 
 
     // taille de la carte
     static final int carteWidth = 10;
-    static final int carteHeight = 11;
+    static final int carteHeight = 10;
     static final int carteTileSize = 20;
+    static int unblocked=2;
+
 
     // constante modelisant les differentes types de cases
+
     static final int CST_diamant = 0;
 
     static final int CST_vert = 1;
@@ -67,6 +83,8 @@ public class SokobanView extends SurfaceView implements SurfaceHolder.Callback, 
     static final int CST_blanc = 8;
     static final int CST_gris = 9;
     static final int CST_vid = 10;
+
+
 
 
 
@@ -108,10 +126,12 @@ public class SokobanView extends SurfaceView implements SurfaceHolder.Callback, 
             {CST_gris, CST_blanc, CST_gris, CST_blanc, CST_gris, CST_blanc, CST_gris, CST_blanc, CST_gris, CST_blanc},
             {CST_blanc, CST_gris, CST_blanc, CST_gris, CST_blanc, CST_gris, CST_blanc, CST_gris, CST_blanc, CST_gris},
             {CST_gris, CST_blanc, CST_gris, CST_blanc, CST_gris, CST_blanc, CST_gris, CST_blanc, CST_gris, CST_blanc},
-            {CST_blanc, CST_gris, CST_blanc, CST_gris, CST_blanc, CST_gris, CST_blanc, CST_gris, CST_blanc, CST_gris},
-
 
     };
+
+
+
+
 
 
     /* compteur et max pour animer les zones d'arriv�e des diamants */
@@ -142,6 +162,7 @@ public class SokobanView extends SurfaceView implements SurfaceHolder.Callback, 
         // chargement des images
         mContext = context;
         mRes = mContext.getResources();
+        block = BitmapFactory.decodeResource(mRes, R.drawable.block);
         diamant = BitmapFactory.decodeResource(mRes, R.drawable.blue);
         bleuciel = BitmapFactory.decodeResource(mRes, R.drawable.bleueciel);
         vert = BitmapFactory.decodeResource(mRes, R.drawable.green);
@@ -150,14 +171,18 @@ public class SokobanView extends SurfaceView implements SurfaceHolder.Callback, 
         marron = BitmapFactory.decodeResource(mRes, R.drawable.darkgreen);
         rose = BitmapFactory.decodeResource(mRes, R.drawable.rose);
         violet = BitmapFactory.decodeResource(mRes, R.drawable.violet);
+        perso = BitmapFactory.decodeResource(mRes, R.drawable.perso);
+        zone[0] = BitmapFactory.decodeResource(mRes, R.drawable.zone_01);
+        zone[1] = BitmapFactory.decodeResource(mRes, R.drawable.zone_02);
+        zone[2] = BitmapFactory.decodeResource(mRes, R.drawable.zone_03);
+        zone[3] = BitmapFactory.decodeResource(mRes, R.drawable.zone_04);
         vide = BitmapFactory.decodeResource(mRes, R.drawable.blanc);
         vide1 = BitmapFactory.decodeResource(mRes, R.drawable.gris);
-        up = BitmapFactory.decodeResource(mRes, R.drawable.up);
+        up = BitmapFactory.decodeResource(mRes, R.drawable.time_progress_bar);
         down = BitmapFactory.decodeResource(mRes, R.drawable.down);
         left = BitmapFactory.decodeResource(mRes, R.drawable.left);
         right = BitmapFactory.decodeResource(mRes, R.drawable.right);
         win = BitmapFactory.decodeResource(mRes, R.drawable.win);
-
 
         // initialisation des parmametres du jeu
         initparameters();
@@ -176,7 +201,7 @@ public class SokobanView extends SurfaceView implements SurfaceHolder.Callback, 
         if (level == 1) {
             for (int i = 0; i < carteHeight; i++) {
                 for (int j = 0; j < carteWidth; j++) {
-                    carte[j][i] = ref[j][i];
+                    carte[i][j] = ref[i][j];
                 }
             }
         }
@@ -203,7 +228,6 @@ public class SokobanView extends SurfaceView implements SurfaceHolder.Callback, 
 
         carteLeftAnchor = (getWidth() - carteWidth * carteTileSize+3) / 2;
 
-
         if ((cv_thread != null) && (!cv_thread.isAlive())) {
             cv_thread.start();
             Log.e("-FCT-", "cv_thread.start()");
@@ -213,6 +237,7 @@ public class SokobanView extends SurfaceView implements SurfaceHolder.Callback, 
     // dessin des fleches , transfert des bitmaps vers un canvas
     private void paintarrow(Canvas canvas) {
         canvas.drawBitmap(up, (getWidth() - up.getWidth()) / 2, 0, null);
+
         canvas.drawBitmap(down, (getWidth() - down.getWidth()) / 2, getHeight() - down.getHeight(), null);
         canvas.drawBitmap(left, 0, (getHeight() - up.getHeight()) / 2, null);
         canvas.drawBitmap(right, getWidth() - right.getWidth(), (getHeight() - up.getHeight()) / 2, null);
@@ -239,25 +264,29 @@ public class SokobanView extends SurfaceView implements SurfaceHolder.Callback, 
                 }
             }
         }
-
-
     }
 
+    public void initColor()
+    {
 
-    public void initColor() {
-
-        Random r = new Random();
         //Initialisation de 10 cases vides
-        for (int i = 0; i < 10; i++) {
+        Random r = new Random();
+
+        for(int i = 0 ; i<257 ; i++)
+        {
+
             int k = r.nextInt(carteHeight);
             int l = r.nextInt(carteWidth);
             carte[k][l] = 10;
         }
 
         //Initialisation du reste avec des couleurs
-        for (int i = 0; i < carteHeight; i++) {
-            for (int j = 0; j < carteWidth; j++) {
-                if (carte[i][j] != 10) {
+        for(int i=0 ; i<carteHeight ; i++)
+        {
+            for(int j=0 ; j<carteWidth ; j++)
+            {
+                if(carte[i][j] != 10)
+                {
                     int color = r.nextInt(8);
                     carte[i][j] = color;
                 }
@@ -265,13 +294,13 @@ public class SokobanView extends SurfaceView implements SurfaceHolder.Callback, 
         }
     }
 
-
     // dessin des couleurs
     private void paintcolor(Canvas canvas) {
         if (level == 1) {
 
-            for (int i = 0; i < carteHeight; i++) {
-                for (int j = 0; j < carteWidth; j++) {
+            for (int i = 0; i < carteHeight ; i++)
+            {
+                for (int j = 0; j < carteWidth ; j++) {
 
                     switch (carte[i][j]) {
 
@@ -315,43 +344,29 @@ public class SokobanView extends SurfaceView implements SurfaceHolder.Callback, 
     }
 
 
-    // permet d'identifier si la partie est gagnee (tous les diamants à leur place)
-    /*private boolean isWon() {
-        if (level == 1) {
-            for (int i = 0; i < 4; i++) {
-                if (!IsCell(diamants[i][1], diamants[i][0], CST_zone)) {
-                    return false;
-                }
-            }
-        }
-
-
-        return true;
-    }*/
 
     // dessin du jeu (fond uni, en fonction du jeu gagne ou pas dessin du plateau et du joueur des diamants et des fleches)
     private void nDraw(Canvas canvas) {
-        canvas.drawRGB(44, 44, 44);
-       /* if (isWon()) {
+        canvas.drawRGB(44,44,44);
+
             paintcarte(canvas);
-            paintwin(canvas);
+            paintcolor(canvas);
+            blocked_game();
 
-            //initparameters();
-        } else*/
-        paintcarte(canvas);
-        paintcolor(canvas);
         //paintPlayer(canvas);
-        //paintdiamants(canvas);
-        //paintarrow(canvas);
+            //paintdiamants(canvas);
+            //paintarrow(canvas);
+        }
 
 
-    }
+
 
     // callback sur le cycle de vie de la surfaceview
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-        Log.i("-> FCT <-", "surfaceChanged " + width + " - " + height);//informations sur la taille de la surface
+        Log.i("-> FCT <-", "surfaceChanged "+ width +" - "+ height);//informations sur la taille de la surface
 
         initparameters();
+
     }
 
     public void surfaceCreated(SurfaceHolder arg0) {
@@ -371,8 +386,10 @@ public class SokobanView extends SurfaceView implements SurfaceHolder.Callback, 
         Canvas c = null;
         while (in) {
             try {
-                Thread.sleep(40);
+
+                cv_thread.sleep(40);
                 currentStepZone = (currentStepZone + 1) % maxStepZone;
+
                 try {
                     c = holder.lockCanvas(null);//obtient un canvas pour pouvoir dessiner dans cette surface
                     nDraw(c);
@@ -381,82 +398,17 @@ public class SokobanView extends SurfaceView implements SurfaceHolder.Callback, 
                         holder.unlockCanvasAndPost(c);
                     }
                 }
-            } catch (Exception e) {
+            } catch(Exception e) {
                 Log.e("-> RUN <-", "PB DANS RUN");
-                in = false;
+                in= false;
             }
         }
     }
 
-    // verification que nous sommes dans le tableau
-    private boolean IsOut(int x, int y) {
-        if ((x < 0) || (x > carteWidth - 1)) {
-            return true;
-        }
-        return (y < 0) || (y > carteHeight - 1);
-    }
-
-    //controle de la valeur d'une cellule
-    private boolean IsCell(int x, int y, int mask) {
-        return carte[y][x] == mask;
-    }
 
 
 
-
-    public void clearColor(Color c[]) {
-
-
-        int count[] = {0, 0, 0, 0,0,0,0,0};
-
-        for (int i = 0; i < 4; i++) {
-
-            for (int j = 0; j < 8; j++) {
-
-                if (c[i].color_one == j) {
-
-                    count[j]=count[j]+1;
-
-                }
-
-            }
-        }
-
-        for (int k=0;k<8;k++) {
-
-
-            if (count[k]>1){
-
-
-                for (int l=0;l<4;l++){
-
-
-                    if (c[l].color_one==k){
-
-                        int y=c[l].row;
-                        int x=c[l].column;
-
-                        carte[y][x]=10;
-                    }
-
-                }
-
-
-            }
-
-
-
-        }
-
-    }
-
-
-
-
-
-
-
-    public void position_color(int j, int i) {
+    public Color [] position_color(int j, int i) {
 
 
         int y = j;
@@ -470,7 +422,8 @@ public class SokobanView extends SurfaceView implements SurfaceHolder.Callback, 
         }
 
 
-        /*  git un cas quelconque dans lequel on ne risque pas de dépasser les limites du tableau si on cherche à droite ou dans une autre direction  */
+
+        /*   Le dernier cas est un cas quelconque dans lequel on ne risque pas de dépasser les limites du tableau si on cherche à droite ou dans une autre direction  */
 
 
         if (carte[y][x] == 10) {
@@ -479,12 +432,10 @@ public class SokobanView extends SurfaceView implements SurfaceHolder.Callback, 
             while (x < carteWidth) {
 
 
-                if (carte[y][x]==0||carte[y][x]==1||carte[y][x]==2||carte[y][x]==3||carte[y][x]==4||carte[y][x]==5 ||carte[y][x]==6||carte[y][x]==7) {
+                if (carte[y][x] == 0 || carte[y][x] == 1 || carte[y][x] == 2 || carte[y][x] == 3 || carte[y][x] == 4 || carte[y][x] == 5 || carte[y][x] == 6 || carte[y][x] == 7) {
 
 
                     color_tab[a] = new Color(carte[y][x], y, x);
-
-
 
                     a++;
                     break;
@@ -497,7 +448,7 @@ public class SokobanView extends SurfaceView implements SurfaceHolder.Callback, 
             while (y < carteHeight) {
 
 
-                if (carte[y][x] == 0 || carte[y][x] == 1 || carte[y][x] == 2 || carte[y][x] == 3 || carte[y][x] == 4 || carte[y][x] == 5||carte[y][x]==6||carte[y][x]==7) {
+                if (carte[y][x] == 0 || carte[y][x] == 1 || carte[y][x] == 2 || carte[y][x] == 3 || carte[y][x] == 4 || carte[y][x] == 5 || carte[y][x] == 6 || carte[y][x] == 7) {
 
 
                     color_tab[a] = new Color(carte[y][x], y, x);
@@ -513,7 +464,7 @@ public class SokobanView extends SurfaceView implements SurfaceHolder.Callback, 
 
             while (x >= 0) {
 
-                if (carte[y][x] == 0 || carte[y][x] == 1 || carte[y][x] == 2 || carte[y][x] == 3 || carte[y][x] == 4 || carte[y][x] == 5||carte[y][x]==6||carte[y][x]==7) {
+                if (carte[y][x] == 0 || carte[y][x] == 1 || carte[y][x] == 2 || carte[y][x] == 3 || carte[y][x] == 4 || carte[y][x] == 5 || carte[y][x] == 6 || carte[y][x] == 7) {
 
 
                     color_tab[a] = new Color(carte[y][x], y, x);
@@ -530,7 +481,7 @@ public class SokobanView extends SurfaceView implements SurfaceHolder.Callback, 
             while (y >= 0) {
 
 
-                if (carte[y][x] == 0 || carte[y][x] == 1 || carte[y][x] == 2 || carte[y][x] == 3 || carte[y][x] == 4 || carte[y][x] == 5||carte[y][x]==6||carte[y][x]==7) {
+                if (carte[y][x] == 0 || carte[y][x] == 1 || carte[y][x] == 2 || carte[y][x] == 3 || carte[y][x] == 4 || carte[y][x] == 5 || carte[y][x] == 6 || carte[y][x] == 7) {
 
 
                     color_tab[a] = new Color(carte[y][x], y, x);
@@ -542,9 +493,61 @@ public class SokobanView extends SurfaceView implements SurfaceHolder.Callback, 
             }
 
 
-            clearColor(color_tab);
-
         }
+        return color_tab;
+    }
+
+
+
+
+
+    public int[] countSameColor(Color c[]) {
+
+
+        int count[] = {0, 0, 0, 0, 0, 0, 0, 0};
+
+        for (int i = 0; i < 4; i++) {
+
+            for (int j = 0; j < 8; j++) {
+
+                if (c[i].color_one == j) {
+
+                    count[j] = count[j] + 1;
+
+                }
+            }
+        }
+        return count;
+    }
+
+
+    public void clearColor(int count[],Color[] c){
+
+        int cleared_color = 0;
+
+        for (int k=0;k<8;k++) {
+
+            if (count[k]>1){
+                for (int l=0;l<4;l++){
+
+                    if (c[l].color_one==k){
+
+                        int y=c[l].row;
+                        int x=c[l].column;
+
+                        carte[y][x]=10;
+                        cleared_color++;
+                    }
+                }
+            }
+        }
+
+        if( cleared_color== 2)
+            points += 40;
+        else if(cleared_color == 3)
+            points += 60;
+        else if(cleared_color == 4)
+            points += 120;
 
 
     }
@@ -552,28 +555,125 @@ public class SokobanView extends SurfaceView implements SurfaceHolder.Callback, 
 
 
 
-    // fonction permettant de recuperer les evenements tactiles
+    public void display_points()
+    {
+        TextView textPoints = (TextView)this.getRootView().findViewById(R.id.textView5);
+        textPoints.setText("Points : " + String.valueOf(points));
+    }
+
+
+
+    public int setunblocked( int []count) {
+
+
+        for (int k = 0; k < 8; k++) {
+
+            if (count[k] > 1) {
+                unblocked = 1;
+
+                return unblocked;
+            }
+        }
+
+        //Log.i("", "UNBLOCKED= " + unblocked);
+        unblocked=0;
+
+        return unblocked;
+    }
+
+    public int unblockedValue(){// permet d'arrêter le jeu si il n y'a plus de combinaisons possibles ou s'il n y'a que des cases vides
+
+
+        for (int j=0;j<carteHeight;j++){
+            for (int i=0;i<carteWidth;i++){
+                if (carte[j][i]==10){
+
+                    countSameColor(position_color(j,i));
+                    unblocked=setunblocked(countSameColor(position_color(j,i)));
+
+                    if(unblocked==1) {
+
+                        //Log.i("", "UNBLOCKED= " + unblocked);
+
+                        return unblocked;
+
+                    }
+                }
+            }
+        }
+        if (unblocked!=1) {
+            unblocked = 0;
+        }
+
+
+
+        return unblocked;
+
+    }
+
+    public void blocked_game(){
+
+        unblocked=unblockedValue();
+
+        if(unblocked!=1){
+
+            unblocked=0;
+            //Log.i("", "UNBLOCKED= " + unblocked);
+
+
+        }
+
+    }
     public boolean onTouchEvent (MotionEvent event) {
+        Log.i("-> FCT <-", "jj " + event.getX());
+        Log.i("-> FCT <-", "jj " + event.getY());
+
+        int x=((int)event.getX()-carteLeftAnchor)/20;
+        int y=((int)event.getY()-carteTopAnchor)/20;
+
+        Log.i("", "matrice x= " + x);
+        Log.i("", "matrice y= " + y);
+
+        Log.i("", "matrice x= " + carteTopAnchor);
 
 
-       /* Log.i("-> FCT <-", "onTouchEvent: " + event.getY());
-        Log.i("-> FCT <-", "onTouchEvent: " + event.getX());
-
-        Log.i("-> FCT <-", "topanchor " + carteTopAnchor);
-        Log.i("-> FCT <-", "leftanchor " + carteLeftAnchor);*/
 
 
+        /*if (x==9 && y==9){
+            carte[y][x]= 10;
+            points++;
+            ((p8_Sokoban)getContext()).textView5.setText("Points :" + String.valueOf(points));
 
-        int x=((int)event.getX()-carteLeftAnchor)/carteTileSize; //permet de récupérer les coordonnées en y et x de de l'espace touchée
-        int y=((int)event.getY()-carteTopAnchor)/carteTileSize;
+        }
 
-        Log.i("-> FCT <-", " y " + y);
-        Log.i("-> FCT <-", "x " + x);
+        if (x==1 && y==0){
+            carte[y][x]= 10;
+            points++;
+            ((p8_Sokoban)getContext()).textView5.setText("Points :" + String.valueOf(points));
+        }
 
-    /*if ((y>=0&&y<carteHeight)&&(x>=0&&x<carteWidth))
-        position_color(y,x);*/
+        if (x==0 && y==1){
+            carte[y][x]= 10;
+            points++;
+            ((p8_Sokoban)getContext()).textView5.setText("Points :" + String.valueOf(points));
 
-       /* if (event.getY() < 50) {
+        }*/
+
+        //position_color(x,y);
+
+
+
+
+
+        if ((y>=0&&y<carteHeight)&&(x>=0&&x<carteWidth)) {
+            int []count_color=countSameColor(position_color(y, x));
+            clearColor(count_color,position_color(y, x));
+        }
+        display_points();
+
+
+
+        /*if (event.getY() < 50) {
             onKeyDown(KeyEvent.KEYCODE_DPAD_UP, null);
         } else if (event.getY() > getHeight() - 50) {
             if (event.getX() > getWidth() - 50) {
@@ -585,7 +685,7 @@ public class SokobanView extends SurfaceView implements SurfaceHolder.Callback, 
             onKeyDown(KeyEvent.KEYCODE_DPAD_LEFT, null);
         } else if (event.getX() > getWidth() - 50) {
             onKeyDown(KeyEvent.KEYCODE_DPAD_RIGHT, null);
-        } /*else if (isWon() == true && (event.getX() >= 155 && event.getX() <= 175 && event.getY() >= 255 && event.getY() <= 275)) {
+        } else if (isWon() == true && (event.getX() >= 155 && event.getX() <= 175 && event.getY() >= 255 && event.getY() <= 275)) {
 
             if (level == 1) {
                 level = 2;

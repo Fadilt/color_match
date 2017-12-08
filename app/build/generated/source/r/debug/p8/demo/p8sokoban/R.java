@@ -14,43 +14,50 @@ public final class R {
     public static final int block=0x7f010002;
     public static final int blue=0x7f010003;
     public static final int btn_play_pressed=0x7f010004;
-    public static final int cover=0x7f010005;
-    public static final int cyan=0x7f010006;
-    public static final int darkgreen=0x7f010007;
-    public static final int diamant=0x7f010008;
-    public static final int down=0x7f010009;
-    public static final int green=0x7f01000a;
-    public static final int gris=0x7f01000b;
-    public static final int icon=0x7f01000c;
-    public static final int left=0x7f01000d;
-    public static final int mic_off=0x7f01000e;
-    public static final int mic_on=0x7f01000f;
-    public static final int perso=0x7f010010;
-    public static final int right=0x7f010011;
-    public static final int rose=0x7f010012;
-    public static final int time_progress_bar=0x7f010013;
-    public static final int up=0x7f010014;
-    public static final int vide=0x7f010015;
-    public static final int violet=0x7f010016;
-    public static final int win=0x7f010017;
-    public static final int yellow=0x7f010018;
-    public static final int zone_01=0x7f010019;
-    public static final int zone_02=0x7f01001a;
-    public static final int zone_03=0x7f01001b;
-    public static final int zone_04=0x7f01001c;
+    public static final int btn_score_pressed=0x7f010005;
+    public static final int cover=0x7f010006;
+    public static final int cyan=0x7f010007;
+    public static final int darkgreen=0x7f010008;
+    public static final int diamant=0x7f010009;
+    public static final int down=0x7f01000a;
+    public static final int green=0x7f01000b;
+    public static final int gris=0x7f01000c;
+    public static final int icon=0x7f01000d;
+    public static final int left=0x7f01000e;
+    public static final int mic_off=0x7f01000f;
+    public static final int mic_on=0x7f010010;
+    public static final int perso=0x7f010011;
+    public static final int right=0x7f010012;
+    public static final int rose=0x7f010013;
+    public static final int time_progress_bar=0x7f010014;
+    public static final int up=0x7f010015;
+    public static final int vide=0x7f010016;
+    public static final int violet=0x7f010017;
+    public static final int win=0x7f010018;
+    public static final int yellow=0x7f010019;
+    public static final int zone_01=0x7f01001a;
+    public static final int zone_02=0x7f01001b;
+    public static final int zone_03=0x7f01001c;
+    public static final int zone_04=0x7f01001d;
   }
   public static final class id {
     public static final int SokobanView=0x7f020000;
-    public static final int button=0x7f020001;
-    public static final int button2=0x7f020002;
-    public static final int button3=0x7f020003;
+    public static final int imageView=0x7f020001;
+    public static final int imageView2=0x7f020002;
+    public static final int imageView3=0x7f020003;
+    public static final int progressBar=0x7f020004;
+    public static final int textView5=0x7f020005;
+    public static final int textViewPoint=0x7f020006;
   }
   public static final class layout {
     public static final int main=0x7f030000;
     public static final int main2=0x7f030001;
+    public static final int menu=0x7f030002;
+    public static final int score=0x7f030003;
   }
   public static final class string {
     public static final int app_name=0x7f040000;
     public static final int hello=0x7f040001;
+    public static final int name=0x7f040002;
   }
 }

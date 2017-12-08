@@ -1,19 +1,4 @@
-#Wed Dec 06 23:44:53 CET 2017
-path.1=classes.dex
+#Fri Dec 08 18:45:33 CET 2017
+base.0=/Users/nassim/Documents/M1/Android/color_match/color_match/app/build/intermediates/transforms/dexMerger/debug/0
 path.0=classes.dex
-renamed.5=classes6.dex
-renamed.4=classes5.dex
-renamed.3=classes4.dex
-renamed.2=classes3.dex
-renamed.1=classes2.dex
 renamed.0=classes.dex
-base.5=/Users/nassim/Documents/M1/Android/color_match/color_match/app/build/intermediates/transforms/dexMerger/debug/35
-base.4=/Users/nassim/Documents/M1/Android/color_match/color_match/app/build/intermediates/transforms/dexMerger/debug/33
-base.3=/Users/nassim/Documents/M1/Android/color_match/color_match/app/build/intermediates/transforms/dexMerger/debug/36
-base.2=/Users/nassim/Documents/M1/Android/color_match/color_match/app/build/intermediates/transforms/dexMerger/debug/31
-base.1=/Users/nassim/Documents/M1/Android/color_match/color_match/app/build/intermediates/transforms/dexMerger/debug/34
-base.0=/Users/nassim/Documents/M1/Android/color_match/color_match/app/build/intermediates/transforms/dexMerger/debug/32
-path.5=classes.dex
-path.4=classes.dex
-path.3=classes.dex
-path.2=classes.dex

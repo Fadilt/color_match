@@ -1,38 +1,38 @@
 -- Merging decision tree log ---
 manifest
-ADDED from /Users/nassim/Documents/M1/Android/color_match/color_match/app/src/main/AndroidManifest.xml:2:1-18:12
-INJECTED from /Users/nassim/Documents/M1/Android/color_match/color_match/app/src/main/AndroidManifest.xml:2:1-18:12
-INJECTED from /Users/nassim/Documents/M1/Android/color_match/color_match/app/src/main/AndroidManifest.xml:2:1-18:12
-INJECTED from /Users/nassim/Documents/M1/Android/color_match/color_match/app/src/main/AndroidManifest.xml:2:1-18:12
-INJECTED from /Users/nassim/Documents/M1/Android/color_match/color_match/app/src/main/AndroidManifest.xml:2:1-18:12
-INJECTED from /Users/nassim/Documents/M1/Android/color_match/color_match/app/src/main/AndroidManifest.xml:2:1-18:12
-INJECTED from /Users/nassim/Documents/M1/Android/color_match/color_match/app/src/main/AndroidManifest.xml:2:1-18:12
+ADDED from /Users/nassim/Documents/M1/Android/color_match/color_match/app/src/main/AndroidManifest.xml:2:1-21:12
+INJECTED from /Users/nassim/Documents/M1/Android/color_match/color_match/app/src/main/AndroidManifest.xml:2:1-21:12
+INJECTED from /Users/nassim/Documents/M1/Android/color_match/color_match/app/src/main/AndroidManifest.xml:2:1-21:12
+INJECTED from /Users/nassim/Documents/M1/Android/color_match/color_match/app/src/main/AndroidManifest.xml:2:1-21:12
+INJECTED from /Users/nassim/Documents/M1/Android/color_match/color_match/app/src/main/AndroidManifest.xml:2:1-21:12
+INJECTED from /Users/nassim/Documents/M1/Android/color_match/color_match/app/src/main/AndroidManifest.xml:2:1-21:12
+INJECTED from /Users/nassim/Documents/M1/Android/color_match/color_match/app/src/main/AndroidManifest.xml:2:1-21:12
 	package
-		ADDED from /Users/nassim/Documents/M1/Android/color_match/color_match/app/src/main/AndroidManifest.xml:3:7-34
+		ADDED from /Users/nassim/Documents/M1/Android/color_match/color_match/app/src/main/AndroidManifest.xml:3:5-32
 		INJECTED from /Users/nassim/Documents/M1/Android/color_match/color_match/app/src/main/AndroidManifest.xml
 		INJECTED from /Users/nassim/Documents/M1/Android/color_match/color_match/app/src/main/AndroidManifest.xml
 	android:versionName
-		ADDED from /Users/nassim/Documents/M1/Android/color_match/color_match/app/src/main/AndroidManifest.xml:5:7-32
+		ADDED from /Users/nassim/Documents/M1/Android/color_match/color_match/app/src/main/AndroidManifest.xml:5:5-30
 		INJECTED from /Users/nassim/Documents/M1/Android/color_match/color_match/app/src/main/AndroidManifest.xml
 		INJECTED from /Users/nassim/Documents/M1/Android/color_match/color_match/app/src/main/AndroidManifest.xml
 	xmlns:android
 		ADDED from /Users/nassim/Documents/M1/Android/color_match/color_match/app/src/main/AndroidManifest.xml:2:11-69
 	android:versionCode
-		ADDED from /Users/nassim/Documents/M1/Android/color_match/color_match/app/src/main/AndroidManifest.xml:4:7-30
+		ADDED from /Users/nassim/Documents/M1/Android/color_match/color_match/app/src/main/AndroidManifest.xml:4:5-28
 		INJECTED from /Users/nassim/Documents/M1/Android/color_match/color_match/app/src/main/AndroidManifest.xml
 		INJECTED from /Users/nassim/Documents/M1/Android/color_match/color_match/app/src/main/AndroidManifest.xml
 application
-ADDED from /Users/nassim/Documents/M1/Android/color_match/color_match/app/src/main/AndroidManifest.xml:6:5-15:19
+ADDED from /Users/nassim/Documents/M1/Android/color_match/color_match/app/src/main/AndroidManifest.xml:6:5-18:19
 	android:label
 		ADDED from /Users/nassim/Documents/M1/Android/color_match/color_match/app/src/main/AndroidManifest.xml:6:48-80
 	android:icon
 		ADDED from /Users/nassim/Documents/M1/Android/color_match/color_match/app/src/main/AndroidManifest.xml:6:18-47
-activity#p8.demo.p8sokoban.p8_Sokoban
-ADDED from /Users/nassim/Documents/M1/Android/color_match/color_match/app/src/main/AndroidManifest.xml:7:9-13:20
+activity#p8.demo.p8sokoban.MenuActivity
+ADDED from /Users/nassim/Documents/M1/Android/color_match/color_match/app/src/main/AndroidManifest.xml:7:9-15:20
 	android:label
-		ADDED from /Users/nassim/Documents/M1/Android/color_match/color_match/app/src/main/AndroidManifest.xml:8:19-51
+		ADDED from /Users/nassim/Documents/M1/Android/color_match/color_match/app/src/main/AndroidManifest.xml:8:13-45
 	android:name
-		ADDED from /Users/nassim/Documents/M1/Android/color_match/color_match/app/src/main/AndroidManifest.xml:7:19-45
+		ADDED from /Users/nassim/Documents/M1/Android/color_match/color_match/app/src/main/AndroidManifest.xml:7:19-47
 intent-filter#android.intent.action.MAIN+android.intent.category.LAUNCHER
 ADDED from /Users/nassim/Documents/M1/Android/color_match/color_match/app/src/main/AndroidManifest.xml:9:13-12:29
 action#android.intent.action.MAIN
@@ -43,3 +43,7 @@ category#android.intent.category.LAUNCHER
 ADDED from /Users/nassim/Documents/M1/Android/color_match/color_match/app/src/main/AndroidManifest.xml:11:17-77
 	android:name
 		ADDED from /Users/nassim/Documents/M1/Android/color_match/color_match/app/src/main/AndroidManifest.xml:11:27-74
+activity#p8.demo.p8sokoban.p8_Sokoban
+ADDED from /Users/nassim/Documents/M1/Android/color_match/color_match/app/src/main/AndroidManifest.xml:16:9-48
+	android:name
+		ADDED from /Users/nassim/Documents/M1/Android/color_match/color_match/app/src/main/AndroidManifest.xml:16:19-45
